@@ -1,0 +1,12 @@
+if TARGET_LANDROVER
+
+config SYS_BOARD
+	default "landrover"
+
+config SYS_VENDOR
+	default "samsung"
+
+config SYS_CONFIG_NAME
+	default "landrover"
+
+endif
