@@ -34,8 +34,11 @@
 #include <asm/arch/system.h>
 #include <asm/armv7.h>
 #include "common_setup.h"
-//#include "exynos5_setup.h"
+#ifdef CONFIG_LANDROVER
+#include "landrover_setup.h"
+#else
 #include "exynos4_setup.h"
+#endif
 
 /* These are the things we can do during low-level init */
 enum {

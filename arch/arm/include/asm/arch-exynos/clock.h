@@ -239,80 +239,80 @@ struct exynos4_clock {
 
 struct exynos4x12_clock {
 	unsigned char	res1[0x4200];
-	unsigned int	src_leftbus;
-	unsigned char	res2[0x1fc];
-	unsigned int	mux_stat_leftbus;
-	unsigned char	res3[0xfc];
-	unsigned int	div_leftbus;
+	unsigned int	src_leftbus;	// 0x4200
+	unsigned char	res2[0x1fc];	// 0x4204
+	unsigned int	mux_stat_leftbus;	// 0x4400
+	unsigned char	res3[0xfc];		// 0x4404
+	unsigned int	div_leftbus;	// 0x4500
 	unsigned char	res4[0xfc];
-	unsigned int	div_stat_leftbus;
+	unsigned int	div_stat_leftbus;	// 0x4600
 	unsigned char	res5[0x1fc];
-	unsigned int	gate_ip_leftbus;
-	unsigned char	res6[0x12c];
-	unsigned int	gate_ip_image;
+	unsigned int	gate_ip_leftbus;	// 0x4800
+	unsigned char	res6[0x12c];	// 0x4804
+	unsigned int	gate_ip_image;	// 0x4930
 	unsigned char	res7[0xcc];
-	unsigned int	clkout_leftbus;
-	unsigned int	clkout_leftbus_div_stat;
+	unsigned int	clkout_leftbus;		// 0x4a00
+	unsigned int	clkout_leftbus_div_stat;	// 0x4a04
 	unsigned char	res8[0x37f8];
-	unsigned int	src_rightbus;
+	unsigned int	src_rightbus;	// 0x8200
 	unsigned char	res9[0x1fc];
-	unsigned int	mux_stat_rightbus;
+	unsigned int	mux_stat_rightbus;	// 0x8400
 	unsigned char	res10[0xfc];
-	unsigned int	div_rightbus;
+	unsigned int	div_rightbus;	// 0x8500
 	unsigned char	res11[0xfc];
-	unsigned int	div_stat_rightbus;
+	unsigned int	div_stat_rightbus;	// 0x8600
 	unsigned char	res12[0x1fc];
-	unsigned int	gate_ip_rightbus;
+	unsigned int	gate_ip_rightbus;	// 0x8800
 	unsigned char	res13[0x15c];
-	unsigned int	gate_ip_perir;
+	unsigned int	gate_ip_perir;	// 0x8960
 	unsigned char	res14[0x9c];
-	unsigned int	clkout_rightbus;
+	unsigned int	clkout_rightbus;	// 0x8a00
 	unsigned int	clkout_rightbus_div_stat;
-	unsigned char	res15[0x3608];
-	unsigned int	epll_lock;
+	unsigned char	res15[0x3608];	// 0x8a08
+	unsigned int	epll_lock;	// 0xc010
 	unsigned char	res16[0xc];
-	unsigned int	vpll_lock;
+	unsigned int	vpll_lock;	// 0xc020
 	unsigned char	res17[0xec];
-	unsigned int	epll_con0;
-	unsigned int	epll_con1;
-	unsigned int	epll_con2;
+	unsigned int	epll_con0;	// 0xc110
+	unsigned int	epll_con1;	// 0xc114
+	unsigned int	epll_con2;	// 0xc118
 	unsigned char	res18[0x4];
-	unsigned int	vpll_con0;
+	unsigned int	vpll_con0;	// 0xc120
 	unsigned int	vpll_con1;
-	unsigned int	vpll_con2;
+	unsigned int	vpll_con2;	// 0xc128
 	unsigned char	res19[0xe4];
-	unsigned int	src_top0;
+	unsigned int	src_top0;	// 0xc210
 	unsigned int	src_top1;
-	unsigned char	res20[0x8];
-	unsigned int	src_cam;
+	unsigned char	res20[0x8];	// 0xc218
+	unsigned int	src_cam;	// 0xc220
 	unsigned int	src_tv;
-	unsigned int	src_mfc;
-	unsigned int	src_g3d;
+	unsigned int	src_mfc;	// 0xc228
+	unsigned int	src_g3d;	// 0xc22c
 	unsigned char	res21[0x4];
-	unsigned int	src_lcd;
-	unsigned int	src_isp;
+	unsigned int	src_lcd;	// 0xc234
+	unsigned int	src_isp;	// 0xc238
 	unsigned int	src_maudio;
-	unsigned int	src_fsys;
+	unsigned int	src_fsys;	// 0xc240
 	unsigned char	res22[0xc];
-	unsigned int	src_peril0;
+	unsigned int	src_peril0;	// 0xc250
 	unsigned int	src_peril1;
-	unsigned int	src_cam1;
+	unsigned int	src_cam1;	// 0xc258
 	unsigned char	res23[0xb4];
-	unsigned int	src_mask_top;
+	unsigned int	src_mask_top;	// 0xc310
 	unsigned char	res24[0xc];
-	unsigned int	src_mask_cam;
-	unsigned int	src_mask_tv;
+	unsigned int	src_mask_cam;	// 0xc320
+	unsigned int	src_mask_tv;	// 0xc324
 	unsigned char	res25[0xc];
-	unsigned int	src_mask_lcd;
+	unsigned int	src_mask_lcd;	// 0xc334
 	unsigned int	src_mask_isp;
 	unsigned int	src_mask_maudio;
-	unsigned int	src_mask_fsys;
+	unsigned int	src_mask_fsys;	// 0xc340
 	unsigned char	res26[0xc];
-	unsigned int	src_mask_peril0;
-	unsigned int	src_mask_peril1;
+	unsigned int	src_mask_peril0;	// 0xc350
+	unsigned int	src_mask_peril1;	// 0xc354
 	unsigned char	res27[0xb8];
-	unsigned int	mux_stat_top0;
-	unsigned int	mux_stat_top1;
+	unsigned int	mux_stat_top0;	// 0xc410
+	unsigned int	mux_stat_top1;	// 0xc414
 	unsigned char	res28[0x10];
 	unsigned int	mux_stat_mfc;
 	unsigned int	mux_stat_g3d;
@@ -504,10 +504,10 @@ struct exynos4x12_clock {
 	unsigned int	gate_ip_isp0;
 	unsigned int	gate_ip_isp1;
 	unsigned char	res83[0x1f8];
-	unsigned int	clkout_cmu_isp;
-	unsigned int	clkout_cmu_ispd_div_stat;
+	unsigned int	clkout_cmu_isp;	// 0x8a00
+	unsigned int	clkout_cmu_ispd_div_stat;	// 0x8a04
 	unsigned char	res84[0xf8];
-	unsigned int	cmu_isp_spar0;
+	unsigned int	cmu_isp_spar0;	// 0x8b00
 	unsigned int	cmu_isp_spar1;
 	unsigned int	cmu_isp_spar2;
 	unsigned int	cmu_isp_spar3;

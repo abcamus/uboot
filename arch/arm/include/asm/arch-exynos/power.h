@@ -210,6 +210,209 @@ struct exynos4_power {
 	unsigned int	gps_alive_option;
 };
 
+struct exynos4x12_power {
+	unsigned int	om_stat;
+	unsigned char	res1[0xc];
+	unsigned int	rtc_clko_sel;				// 0x10
+	unsigned int	gnss_rtc_out_ctrl;			// 0x14
+	unsigned char	res2[0x1e8];				// 0x18
+	unsigned int	central_seq_config;			// 0x200
+	unsigned int	res3;
+	unsigned int	central_seq_option;			// 0x208
+	unsigned char	res4[0x1f4];				// 0x20c
+	unsigned int	swreset;					// 0x400
+	unsigned int	rst_stat;					// 0x404
+	unsigned char	res5[0x1f8];				// 0x408
+	unsigned int	wakeup_stat;				// 0x600
+	unsigned int	eint_wakeup_mask;			// 0x604
+	unsigned int	wakeup_mask;				// 0x608
+	unsigned char	res6[0xf4];					// 0x60c
+	unsigned int	hdmi_phy_control;			// 0x700
+	unsigned int	usbdevice_phy_control;		// 0x704
+	unsigned int	hsic_1_phy_control;			// 0x708
+	unsigned int	hsic_2_phy_control;			// 0x70c
+	unsigned int	mipi_phy0_control;			// 0x710
+	unsigned int	mipi_phy1_control;			// 0x714
+	unsigned int	adc_phy_control;			// 0x718
+	unsigned char	res7[0x64];					// 0x71c
+	unsigned int	body_bias_con0;				// 0x780
+	unsigned int	body_bias_con1;				// 0x784
+	unsigned int	body_bias_con2;				// 0x788
+	unsigned int	body_bias_con3;				// 0x78c
+	unsigned char	res8[0x70];					// 0x790
+	unsigned int	inform0;					// 0x800
+	unsigned int	inform1;
+	unsigned int	inform2;
+	unsigned int	inform3;
+	unsigned int	inform4;
+	unsigned int	inform5;
+	unsigned int	inform6;
+	unsigned int	inform7;					// 0x81c
+	unsigned char	res9[0x1e0];				// 0x820
+	unsigned int	pmu_debug;					// 0xa00
+	unsigned char	res10[0x5fc];
+	unsigned int	arm_core0_sys_pwr_reg;		// 0x1000
+	unsigned char	res11[0xc];
+	unsigned int	arm_core1_sys_pwr_reg;		// 0x1010
+	unsigned char	res12[0x6c];
+	unsigned int	arm_common_sys_pwr_reg;		// 0x1080
+	unsigned char	res13[0x3c];
+	unsigned int	arm_cpu_l2_0_sys_pwr_reg;	// 0x10c0
+	unsigned int	arm_cpu_l2_1_sys_pwr_reg;	// 0x10c4
+	unsigned char	res14[0x38];
+	unsigned int	cmu_aclkstop_sys_pwr_reg;	// 0x1100
+	unsigned int	cmu_sclkstop_sys_pwr_reg;	// 0x1104
+	unsigned char	res15[0x4];
+	unsigned int	cmu_reset_sys_pwr_reg;		// 0x110c
+	unsigned char	res16[0x10];
+	unsigned int	apll_sysclk_sys_pwr_reg;	// 0x1120
+	unsigned int	mpll_sysclk_sys_pwr_reg;
+	unsigned int	vpll_sysclk_sys_pwr_reg;
+	unsigned int	epll_sysclk_sys_pwr_reg;	// 0x112c
+	unsigned char	res17[0x8];
+	unsigned int	cmu_clkstop_gps_alive_sys_pwr_reg;	// 0x1138
+	unsigned int	cmu_reset_gps_alive_sys_pwr_reg;
+	unsigned int	cmu_clkstop_cam_sys_pwr_reg;		// 0x1140
+	unsigned int	cmu_clkstop_tv_sys_pwr_reg;			// 0x1144
+	unsigned int	cmu_clkstop_mfc_sys_pwr_reg;		// 0x1148
+	unsigned int	cmu_clkstop_g3d_sys_pwr_reg;		// 0x114c
+	unsigned int	cmu_clkstop_lcd0_sys_pwr_reg;		// 0x1150
+	unsigned int	cmu_clkstop_isp_sys_pwr_reg;		// 0x1154
+	unsigned int	cmu_clkstop_maudio_sys_pwr_reg;		// 0x1158
+	unsigned int	cmu_clkstop_gps_sys_pwr_reg;		// 0x115c
+	unsigned int	cmu_reset_cam_sys_pwr_reg;			// 0x1160
+	unsigned int	cmu_reset_tv_sys_pwr_reg;			// 0x1164
+	unsigned int	cmu_reset_mfc_sys_pwr_reg;			// 0x1168
+	unsigned int	cmu_reset_g3d_sys_pwr_reg;			// 0x116c
+	unsigned int	cmu_reset_lcd0_sys_pwr_reg;			// 0x1170
+	unsigned int	cmu_reset_isp_sys_pwr_reg;			// 0x1174
+	unsigned int	cmu_reset_maudio_sys_pwr_reg;		// 0x1178
+	unsigned int	cmu_reset_gps_sys_pwr_reg;			// 0x117c
+	unsigned int	top_bus_sys_pwr_reg;				// 0x1180
+	unsigned int	top_retention_sys_pwr_reg;			// 0x1184
+	unsigned int	top_pwr_sys_pwr_reg;				// 0x1188
+	unsigned char	res18[0x14];						// 0x118c
+	unsigned int	logic_reset_sys_pwr_reg;			// 0x11a0
+	unsigned char	res19[0x1c];						// 0x11a4
+	unsigned int	onenandxl_mem_sys_pwr_reg;			// 0x11c0
+	unsigned int	onenandxl_mem_sys_pwr_reg;			// 0x11c0
+	unsigned int	hsi_mem_sys_pwr_reg;		// 0x11c4
+	unsigned char	res20[0x4];					// 0x11c8
+	unsigned int	usbotg_mem_sys_pwr_reg;		// 0x11cc
+	unsigned int	sdmmc_mem_sys_pwr_reg;		// 0x11d0
+	unsigned int	cssys_mem_sys_pwr_reg;		// 0x11d4
+	unsigned int	secss_mem_sys_pwr_reg;		// 0x11d8
+	unsigned int	potator_mem_sys_pwr_reg;	// 0x11dc
+	unsigned char	res21[0x20];				// 0x11e0
+	unsigned int	pad_retention_dram_sys_pwr_reg;		// 0x1200
+	unsigned int	pad_retention_maudio_sys_pwr_reg;
+	unsigned char	res22[0x18];		// 0x1208
+	unsigned int	pad_retention_gpio_sys_pwr_reg;		// 0x1220
+	unsigned int	pad_retention_uart_sys_pwr_reg;
+	unsigned int	pad_retention_mmca_sys_pwr_reg;		// 0x1228
+	unsigned int	pad_retention_mmcb_sys_pwr_reg;
+	unsigned int	pad_retention_ebia_sys_pwr_reg;
+	unsigned int	pad_retention_ebib_sys_pwr_reg;		// 0x1234
+	unsigned char	res23[0x8];		// 0x1238
+	unsigned int	pad_isolation_sys_pwr_reg;		// 0x1240
+	unsigned char	res24[0x1c];
+	unsigned int	pad_alv_sel_sys_pwr_reg;		// 0x1260
+	unsigned char	res25[0x1c];
+	unsigned int	xusbxti_sys_pwr_reg;		// 0x1280
+	unsigned int	xxti_sys_pwr_reg;		// 0x1284
+	unsigned char	res26[0x38];
+	unsigned int	ext_regulator_sys_pwr_reg;		// 0x12c0
+	unsigned char	res27[0x3c];
+	unsigned int	gpio_mode_sys_pwr_reg;		// 0x1300
+	unsigned char	res28[0x3c];
+	unsigned int	gpio_mode_maudio_sys_pwr_reg;	// 0x1340
+	unsigned char	res29[0x3c];
+	unsigned int	cam_sys_pwr_reg;	// 0x1380
+	unsigned int	tv_sys_pwr_reg;		// 0x1384
+	unsigned int	mfc_sys_pwr_reg;	// 0x1388
+	unsigned int	g3d_sys_pwr_reg;	// 0x138c
+	unsigned int	lcd0_sys_pwr_reg;	// 0x1390
+	unsigned int	isp_sys_pwr_reg;	// 0x1384
+	unsigned int	maudio_sys_pwr_reg;	// 0x1398
+	unsigned int	gps_sys_pwr_reg;
+	unsigned int	gps_alive_sys_pwr_reg;	// 0x13a0
+	unsigned char	res30[0xc5c];
+	unsigned int	arm_core0_configuration;	// 0x2000
+	unsigned int	arm_core0_status;	// 0x2004
+	unsigned int	arm_core0_option;	// 0x2008
+	unsigned char	res31[0x74];
+	unsigned int	arm_core1_configuration;	// 0x2080
+	unsigned int	arm_core1_status;	// 0x2084
+	unsigned int	arm_core1_option;	// 0x2088
+	unsigned char	res32[0x37c];
+	unsigned int	arm_common_option;	// 0x2408
+	unsigned char	res33[0x1f4];
+	unsigned int	arm_cpu_l2_0_configuration;		// 0x2600
+	unsigned int	arm_cpu_l2_0_status;	// 0x2604
+	unsigned char	res34[0x18];
+	unsigned int	arm_cpu_l2_1_configuration;		// 0x2620
+	unsigned int	arm_cpu_l2_1_status;	// 0x2624
+	unsigned char	res35[0xa00];
+	unsigned int	pad_retention_maudio_option;	// 0x3028
+	unsigned char	res36[0xdc];
+	unsigned int	pad_retention_gpio_option;	// 0x3108
+	unsigned char	res37[0x1c];
+	unsigned int	pad_retention_uart_option;	// 0x3128
+	unsigned char	res38[0x1c];
+	unsigned int	pad_retention_mmca_option;	// 0x3148
+	unsigned char	res39[0x1c];
+	unsigned int	pad_retention_mmcb_option;	// 0x3168
+	unsigned char	res40[0x1c];
+	unsigned int	pad_retention_ebia_option;	// 0x3188
+	unsigned char	res41[0x1c];
+	unsigned int	pad_retention_ebib_option;	// 0x31a8
+	unsigned char	res42[0x160];
+	unsigned int	ps_hold_control;	// 0x330c
+	unsigned char	res43[0xf0];
+	unsigned int	xusbxti_configuration;	// 0x3400
+	unsigned int	xusbxti_status;		// 0x3404
+	unsigned char	res44[0x14];
+	unsigned int	xusbxti_duration;	// 0x341c
+	unsigned int	xxti_configuration;	// 0x3420
+	unsigned int	xxti_status;		// 0x3424
+	unsigned char	res45[0x14];
+	unsigned int	xxti_duration;		// 0x343c
+	unsigned char	res46[0x1dc];
+	unsigned int	ext_regulator_duration;		// 0x361c
+	unsigned char	res47[0x5e0];
+	unsigned int	cam_configuration;		// 0x3c00
+	unsigned int	cam_status;		// 0x3c04
+	unsigned int	cam_option;		// 0x3c08
+	unsigned char	res48[0x14];
+	unsigned int	tv_configuration;	// 0x3c20
+	unsigned int	tv_status;		// 0x3c24
+	unsigned int	tv_option;		// 0x3c28
+	unsigned char	res49[0x14];
+	unsigned int	mfc_configuration;	// 0x3c40
+	unsigned int	mfc_status;		// 0x3c44
+	unsigned int	mfc_option;		// 0x3c48
+	unsigned char	res50[0x14];
+	unsigned int	g3d_configuration;	// 0x3c60
+	unsigned int	g3d_status;
+	unsigned int	g3d_option;		// 0x3c68
+	unsigned char	res51[0x14];
+	unsigned int	lcd0_configuration;		// 0x3c80
+	unsigned int	lcd0_status;
+	unsigned int	lcd0_option;	// 0x3c88
+	unsigned char	res52[0x14];
+	unsigned int	isp_configuration;		// 0x3ca0
+	unsigned int	isp_status;
+	unsigned int	isp_option;		// 0x3ca8
+	unsigned char	res53[0x34];
+	unsigned int	gps_configuration;	// 0x3ce0
+	unsigned int	gps_status;
+	unsigned int	gps_option;		// 0x3ce8
+	unsigned char	res54[0x14];
+	unsigned int	gps_alive_configuration;	// 0x3d00
+	unsigned int	gps_alive_status;	// 0x3d04
+	unsigned int	gps_alive_option;	// 0x3d08
+};
+
 struct exynos4412_power {
 	unsigned char	res1[0x0704];
 	unsigned int	usbhost_phy_control;

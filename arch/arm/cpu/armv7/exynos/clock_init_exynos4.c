@@ -42,10 +42,6 @@
  */
 void system_clock_init(void)
 {
-#if 0
-	struct exynos4_clock *clk =
-			(struct exynos4_clock *)samsung_get_base_clock();
-#endif
 	struct exynos4x12_clock *clk = (struct exynos4x12_clock *)
 		samsung_get_base_clock();
 

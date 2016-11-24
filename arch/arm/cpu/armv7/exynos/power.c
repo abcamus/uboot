@@ -214,8 +214,13 @@ static uint32_t exynos5_get_reset_status(void)
 
 static uint32_t exynos4_get_reset_status(void)
 {
+#ifdef CONFIG_LANDROVER
+	struct exynos4x12_power *power = 
+		(struct exynos4x12_power *)samsung_get_base_power();
+#else
 	struct exynos4_power *power =
 		(struct exynos4_power *)samsung_get_base_power();
+#endif
 
 	return power->inform1;
 }
