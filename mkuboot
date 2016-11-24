@@ -7,7 +7,7 @@
 
 chmod 777 sdfuse_q -R
 		
-echo "Fuse iTOP-4412 trustzone uboot file into SD card"
+echo "Fuse Landrover trustzone uboot file into SD card"
 cd ./sdfuse_q
 
 if [ -z $1 ]
