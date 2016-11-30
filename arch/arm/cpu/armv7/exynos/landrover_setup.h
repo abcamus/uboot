@@ -28,6 +28,14 @@
 /* Bus Configuration Register Address */
 #define ASYNC_CONFIG		0x10010350
 
+/* A/M PLL_CON0 */
+#define SDIV(x)                 ((x) & 0x7)
+#define PDIV(x)                 (((x) & 0x3f) << 8)
+#define MDIV(x)                 (((x) & 0x3ff) << 16)
+#define FSEL(x)                 (((x) & 0x1) << 27)
+#define PLL_LOCKED_BIT          (0x1 << 29)
+#define PLL_ENABLE(x)           (((x) & 0x1) << 31)
+
 /* CLK_SRC_CPU */
 #define MUX_APLL_SEL(x)         ((x) & 0x1)
 #define MUX_CORE_SEL(x)         (((x) & 0x1) << 16)
@@ -35,6 +43,16 @@
 #define MUX_MPLL_USER_SEL_C(x)  (((x) & 0x1) << 24)
 
 #define MUX_STAT_CHANGING       0x100
+
+/* CLK_MUX_STAT_CPU */
+#define APLL_SEL(x)             ((x) & 0x7)
+#define CORE_SEL(x)             (((x) & 0x7) << 16)
+#define HPM_SEL(x)              (((x) & 0x7) << 20)
+#define MPLL_USER_SEL_C(x)      (((x) & 0x7) << 24)
+#define MUX_STAT_CPU_CHANGING   (APLL_SEL(MUX_STAT_CHANGING) | \
+				CORE_SEL(MUX_STAT_CHANGING) | \
+				HPM_SEL(MUX_STAT_CHANGING) | \
+				MPLL_USER_SEL_C(MUX_STAT_CHANGING))
 
 #if 0
 /* CLK_SRC_CPU */

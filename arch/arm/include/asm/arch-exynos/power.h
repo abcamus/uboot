@@ -295,7 +295,6 @@ struct exynos4x12_power {
 	unsigned int	logic_reset_sys_pwr_reg;			// 0x11a0
 	unsigned char	res19[0x1c];						// 0x11a4
 	unsigned int	onenandxl_mem_sys_pwr_reg;			// 0x11c0
-	unsigned int	onenandxl_mem_sys_pwr_reg;			// 0x11c0
 	unsigned int	hsi_mem_sys_pwr_reg;		// 0x11c4
 	unsigned char	res20[0x4];					// 0x11c8
 	unsigned int	usbotg_mem_sys_pwr_reg;		// 0x11cc

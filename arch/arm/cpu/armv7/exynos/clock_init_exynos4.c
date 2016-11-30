@@ -42,6 +42,10 @@
  */
 void system_clock_init(void)
 {
+	unsigned int set, clr, clr_src_cpu, clr_pll_con0, clr_src_dmc;
+	struct exynos4x12_clock *clk = (struct exynos4x12_clock *)
+		samsung_get_base_clock();
+
 #ifdef CONFIG_LANDROVER
 	/*
 	 * CMU_LEFTBUS, CMU_RIGHTBUS, CMU_TOP, CMU_DMC, CMU_CPU, and CMU_ISP
