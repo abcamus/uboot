@@ -203,6 +203,7 @@ int do_lowlevel_init(void)
 
 	arch_cpu_init();
 
+#if 0
 #ifndef CONFIG_SYS_L2CACHE_OFF
 	/*
 	 * Init L2 cache parameters here for use by boot and resume
@@ -216,6 +217,7 @@ int do_lowlevel_init(void)
 	configure_l2_actlr();
 	dsb();
 	isb();
+#endif
 #endif
 
 #ifdef CONFIG_EXYNOS5420
