@@ -290,10 +290,8 @@ void board_init_f(unsigned long bootflag)
 
 	setup_global_data(&local_gd);
 
-#if 0
 	if (do_lowlevel_init())
 		power_exit_wakeup();
-#endif
 
 	copy_uboot_to_ram();
 
