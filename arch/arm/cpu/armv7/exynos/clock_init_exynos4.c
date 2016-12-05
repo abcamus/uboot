@@ -310,5 +310,9 @@ void system_clock_init(void)
 	while (readl(&clk->div_stat_fsys3) & DIV_STAT_FSYS3_CHANGING)
 		continue;
 
+	writel(0x00011000, &clk->src_top1);
+	while (readl(&clk->mux_stat_top1) != 0x01122110)
+		continue;
+
 	return;
 }
