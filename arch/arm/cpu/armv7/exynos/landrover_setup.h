@@ -42,7 +42,7 @@
 #define MUX_HPM_SEL(x)          (((x) & 0x1) << 20)
 #define MUX_MPLL_USER_SEL_C(x)  (((x) & 0x1) << 24)
 
-#define MUX_STAT_CHANGING       0x100
+#define MUX_STAT_CHANGING       0x4
 
 /* CLK_MUX_STAT_CPU */
 #define APLL_SEL(x)             ((x) & 0x7)
@@ -54,86 +54,6 @@
 				HPM_SEL(MUX_STAT_CHANGING) | \
 				MPLL_USER_SEL_C(MUX_STAT_CHANGING))
 
-#if 0
-/* CLK_SRC_CPU */
-#define MUX_HPM_SEL_MOUTAPLL		0x0
-#define MUX_HPM_SEL_SCLKMPLL		0x1
-#define MUX_CORE_SEL_MOUTAPLL		0x0
-#define MUX_CORE_SEL_SCLKMPLL		0x1
-#define MUX_MPLL_SEL_FILPLL		0x0
-#define MUX_MPLL_SEL_MOUTMPLLFOUT	0x1
-#define MUX_APLL_SEL_FILPLL		0x0
-#define MUX_APLL_SEL_MOUTMPLLFOUT	0x1
-#define CLK_SRC_CPU_VAL			((MUX_HPM_SEL_MOUTAPLL << 20) \
-					| (MUX_CORE_SEL_MOUTAPLL << 16) \
-					| (MUX_MPLL_SEL_MOUTMPLLFOUT << 8)\
-					| (MUX_APLL_SEL_MOUTMPLLFOUT << 0))
-
-/* CLK_DIV_CPU0 */
-#define APLL_RATIO			0x0
-#define PCLK_DBG_RATIO		0x1
-#define ATB_RATIO			0x3
-#define PERIPH_RATIO		0x3
-#define COREM1_RATIO		0x7
-#define COREM0_RATIO		0x3
-#define CORE_RATIO			0x0
-#define CLK_DIV_CPU0_VAL	((APLL_RATIO << 24) \
-				| (PCLK_DBG_RATIO << 20) \
-				| (ATB_RATIO << 16) \
-				| (PERIPH_RATIO << 12) \
-				| (COREM1_RATIO << 8) \
-				| (COREM0_RATIO << 4) \
-				| (CORE_RATIO << 0))
-
-/* CLK_DIV_CPU1 */
-#define HPM_RATIO		0x0
-#define COPY_RATIO		0x3
-#define CLK_DIV_CPU1_VAL	((HPM_RATIO << 4) | (COPY_RATIO))
-
-/* CLK_SRC_DMC */
-#define MUX_PWI_SEL_XXTI		0x0
-#define MUX_PWI_SEL_XUSBXTI		0x1
-#define MUX_PWI_SEL_SCLK_HDMI24M	0x2
-#define MUX_PWI_SEL_SCLK_USBPHY0	0x3
-#define MUX_PWI_SEL_SCLK_USBPHY1	0x4
-#define MUX_PWI_SEL_SCLK_HDMIPHY	0x5
-#define MUX_PWI_SEL_SCLKMPLL		0x6
-#define MUX_PWI_SEL_SCLKEPLL		0x7
-#define MUX_PWI_SEL_SCLKVPLL		0x8
-#define MUX_DPHY_SEL_SCLKMPLL		0x0
-#define MUX_DPHY_SEL_SCLKAPLL		0x1
-#define MUX_DMC_BUS_SEL_SCLKMPLL	0x0
-#define MUX_DMC_BUS_SEL_SCLKAPLL	0x1
-#define CLK_SRC_DMC_VAL			((MUX_PWI_SEL_XUSBXTI << 16) \
-					| (MUX_DPHY_SEL_SCLKMPLL << 8) \
-					| (MUX_DMC_BUS_SEL_SCLKMPLL << 4))
-
-/* CLK_DIV_DMC0 */
-#define CORE_TIMERS_RATIO	0x1
-#define COPY2_RATIO		0x3
-#define DMCP_RATIO		0x1
-#define DMCD_RATIO		0x1
-#define DMC_RATIO		0x1
-#define DPHY_RATIO		0x1
-#define ACP_PCLK_RATIO		0x1
-#define ACP_RATIO		0x3
-#define CLK_DIV_DMC0_VAL	((CORE_TIMERS_RATIO << 28) \
-				| (COPY2_RATIO << 24) \
-				| (DMCP_RATIO << 20) \
-				| (DMCD_RATIO << 16) \
-				| (DMC_RATIO << 12) \
-				| (DPHY_RATIO << 8) \
-				| (ACP_PCLK_RATIO << 4)	\
-				| (ACP_RATIO << 0))
-
-/* CLK_DIV_DMC1 */
-#define DPM_RATIO		0x1
-#define DVSEM_RATIO		0x1
-#define PWI_RATIO		0x1
-#define CLK_DIV_DMC1_VAL	((DPM_RATIO << 24) \
-				| (DVSEM_RATIO << 16) \
-				| (PWI_RATIO << 8))
-#else
 /* CLK_DIV_CPU0 */
 #define CORE_RATIO(x)           ((x) & 0x7)
 #define COREM0_RATIO(x)         (((x) & 0x7) << 4)
@@ -251,8 +171,6 @@
 				DIV_C2C_ACLK(DIV_STAT_CHANGING) | \
 				DIV_DVSEM(DIV_STAT_CHANGING) | \
 				DIV_DPM(DIV_STAT_CHANGING))
-
-#endif
 
 /* CLK_SRC_TOP0 */
 #define MUX_ONENAND_SEL_ACLK_133	0x0

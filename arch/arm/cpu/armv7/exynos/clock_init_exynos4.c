@@ -46,10 +46,37 @@ void system_clock_init(void)
 	struct exynos4x12_clock *clk = (struct exynos4x12_clock *)
 		samsung_get_base_clock();
 
-#ifdef CONFIG_LANDROVER
-	/*
-	 * CMU_LEFTBUS, CMU_RIGHTBUS, CMU_TOP, CMU_DMC, CMU_CPU, and CMU_ISP
-	 */
+	/* reset MUXs */	
+	writel(0, &clk->src_cpu);
+	while (readl(&clk->mux_stat_cpu) != 0x01110001)
+		continue;
+
+	writel(0, &clk->src_top0);
+	while (readl(&clk->mux_stat_top0) != 0x11111111)
+		continue;
+
+	writel(0, &clk->src_top1);
+	while (readl(&clk->mux_stat_top1) != 0x01111110)
+		continue;
+
+	/* Set APLL to 1000MHz */
+	clr_pll_con0 = SDIV(7) | PDIV(63) | MDIV(1023) | FSEL(1);
+	set = SDIV(0) | PDIV(3) | MDIV(125) | FSEL(1) | PLL_ENABLE(1);
+
+	clrsetbits_le32(&clk->apll_con0, clr_pll_con0, set);
+
+	/* Wait for PLL to be locked */
+	while (!(readl(&clk->apll_con0) & PLL_LOCKED_BIT))
+		continue;
+
+	/* Set MPLL to 800MHz */
+	set = SDIV(0) | PDIV(3) | MDIV(100) | FSEL(0) | PLL_ENABLE(1);
+
+	clrsetbits_le32(&clk->mpll_con0, clr_pll_con0, set);
+
+	/* Wait for PLL to be locked */
+	while (!(readl(&clk->mpll_con0) & PLL_LOCKED_BIT))
+		continue;
 
 	/*
 	 * CMU_CPU clocks src to MPLL
@@ -61,28 +88,9 @@ void system_clock_init(void)
 	*/
 	clr_src_cpu = MUX_APLL_SEL(1) | MUX_CORE_SEL(1) |
 		      MUX_HPM_SEL(1) | MUX_MPLL_USER_SEL_C(1);
-	set = MUX_APLL_SEL(0) | MUX_CORE_SEL(1) | MUX_HPM_SEL(1) |
+	set = MUX_APLL_SEL(1) | MUX_CORE_SEL(0) | MUX_HPM_SEL(1) |
 	      MUX_MPLL_USER_SEL_C(1);
 
-	clrsetbits_le32(&clk->src_cpu, clr_src_cpu, set);
-
-	/* Wait for mux change */
-	while (readl(&clk->mux_stat_cpu) & MUX_STAT_CPU_CHANGING)
-		continue;
-
-	/* Set APLL to 1000MHz */
-	clr_pll_con0 = SDIV(7) | PDIV(63) | MDIV(1023) | FSEL(1);
-	set = SDIV(0) | PDIV(3) | MDIV(125) | FSEL(1);
-
-	clrsetbits_le32(&clk->apll_con0, clr_pll_con0, set);
-
-	/* Wait for PLL to be locked */
-	while (!(readl(&clk->apll_con0) & PLL_LOCKED_BIT))
-		continue;
-
-	/* Set CMU_CPU clocks src to APLL */
-	set = MUX_APLL_SEL(1) | MUX_CORE_SEL(0) | MUX_HPM_SEL(0) |
-	      MUX_MPLL_USER_SEL_C(1);
 	clrsetbits_le32(&clk->src_cpu, clr_src_cpu, set);
 
 	/* Wait for mux change */
@@ -153,20 +161,9 @@ void system_clock_init(void)
 	/* Wait for mux change */
 	while (readl(&clk->mux_stat_dmc) & MUX_STAT_DMC_CHANGING)
 		continue;
-
-	/* Set MPLL to 800MHz */
-	set = SDIV(0) | PDIV(3) | MDIV(100) | FSEL(0) | PLL_ENABLE(1);
-
-	clrsetbits_le32(&clk->mpll_con0, clr_pll_con0, set);
-
-	/* Wait for PLL to be locked */
-	while (!(readl(&clk->mpll_con0) & PLL_LOCKED_BIT))
-		continue;
-
+	
 	/* Switch back CMU_DMC mux */
-	set = MUX_C2C_SEL(0) | MUX_DMC_BUS_SEL(0) | MUX_DPHY_SEL(0) |
-	      MUX_MPLL_SEL(1) | MUX_PWI_SEL(8) | MUX_G2D_ACP0_SEL(0) |
-	      MUX_G2D_ACP1_SEL(0) | MUX_G2D_ACP_SEL(0);
+	set = MUX_C2C_SEL(0) | MUX_DMC_BUS_SEL(0) | MUX_DPHY_SEL(0) | MUX_MPLL_SEL(1) | MUX_PWI_SEL(8) | MUX_G2D_ACP0_SEL(0) | MUX_G2D_ACP1_SEL(0) | MUX_G2D_ACP_SEL(0);
 
 	clrsetbits_le32(&clk->src_dmc, clr_src_dmc, set);
 
@@ -177,6 +174,7 @@ void system_clock_init(void)
 	/* CLK_DIV_DMC0 */
 	clr = ACP_RATIO(7) | ACP_PCLK_RATIO(7) | DPHY_RATIO(7) |
 	      DMC_RATIO(7) | DMCD_RATIO(7) | DMCP_RATIO(7);
+
 	/*
 	 * For:
 	 * MOUTdmc = 800 MHz
@@ -201,6 +199,7 @@ void system_clock_init(void)
 	/* CLK_DIV_DMC1 */
 	clr = G2D_ACP_RATIO(15) | C2C_RATIO(7) | PWI_RATIO(15) |
 	      C2C_ACLK_RATIO(7) | DVSEM_RATIO(127) | DPM_RATIO(127);
+
 	/*
 	 * For:
 	 * MOUTg2d = 800 MHz
@@ -224,6 +223,7 @@ void system_clock_init(void)
 	/* CLK_SRC_PERIL0 */
 	clr = UART0_SEL(15) | UART1_SEL(15) | UART2_SEL(15) |
 	      UART3_SEL(15) | UART4_SEL(15);
+
 	/*
 	 * Set CLK_SRC_PERIL0 clocks src to MPLL
 	 * src values: 0(XXTI); 1(XusbXTI); 2(SCLK_HDMI24M); 3(SCLK_USBPHY0);
@@ -232,14 +232,14 @@ void system_clock_init(void)
 	 *
 	 * Set all to SCLK_MPLL_USER_T
 	 */
-	set = UART0_SEL(6) | UART1_SEL(6) | UART2_SEL(6) | UART3_SEL(6) |
-	      UART4_SEL(6);
+	set = UART0_SEL(6) | UART1_SEL(6) | UART2_SEL(6) | UART3_SEL(6) | UART4_SEL(6);
 
 	clrsetbits_le32(&clk->src_peril0, clr, set);
 
 	/* CLK_DIV_PERIL0 */
 	clr = UART0_RATIO(15) | UART1_RATIO(15) | UART2_RATIO(15) |
 	      UART3_RATIO(15) | UART4_RATIO(15);
+
 	/*
 	 * For MOUTuart0-4: 800MHz
 	 *
@@ -254,8 +254,8 @@ void system_clock_init(void)
 		continue;
 
 	/* CLK_DIV_FSYS1 */
-	clr = MMC0_RATIO(15) | MMC0_PRE_RATIO(255) | MMC1_RATIO(15) |
-	      MMC1_PRE_RATIO(255);
+	clr = MMC0_RATIO(15) | MMC0_PRE_RATIO(255) | MMC1_RATIO(15) | MMC1_PRE_RATIO(255);
+
 	/*
 	 * For MOUTmmc0-3 = 800 MHz (MPLL)
 	 *
@@ -274,8 +274,8 @@ void system_clock_init(void)
 		continue;
 
 	/* CLK_DIV_FSYS2 */
-	clr = MMC2_RATIO(15) | MMC2_PRE_RATIO(255) | MMC3_RATIO(15) |
-	      MMC3_PRE_RATIO(255);
+	clr = MMC2_RATIO(15) | MMC2_PRE_RATIO(255) | MMC3_RATIO(15) | MMC3_PRE_RATIO(255);
+
 	/*
 	 * For MOUTmmc0-3 = 800 MHz (MPLL)
 	 *
@@ -295,6 +295,7 @@ void system_clock_init(void)
 
 	/* CLK_DIV_FSYS3 */
 	clr = MMC4_RATIO(15) | MMC4_PRE_RATIO(255);
+
 	/*
 	 * For MOUTmmc4 = 800 MHz (MPLL)
 	 *
@@ -310,60 +311,4 @@ void system_clock_init(void)
 		continue;
 
 	return;
-
-#else
-	struct exynos4x12_clock *clk = (struct exynos4x12_clock *)
-		samsung_get_base_clock();
-
-	writel(CLK_SRC_CPU_VAL, &clk->src_cpu);
-
-	sdelay(0x10000);
-
-	writel(CLK_SRC_TOP0_VAL, &clk->src_top0);
-	writel(CLK_SRC_TOP1_VAL, &clk->src_top1);
-	writel(CLK_SRC_DMC_VAL, &clk->src_dmc);
-	writel(CLK_SRC_LEFTBUS_VAL, &clk->src_leftbus);
-	writel(CLK_SRC_RIGHTBUS_VAL, &clk->src_rightbus);
-	writel(CLK_SRC_FSYS_VAL, &clk->src_fsys);
-	writel(CLK_SRC_PERIL0_VAL, &clk->src_peril0);
-	writel(CLK_SRC_CAM_VAL, &clk->src_cam);
-	writel(CLK_SRC_MFC_VAL, &clk->src_mfc);
-	writel(CLK_SRC_G3D_VAL, &clk->src_g3d);
-	writel(CLK_SRC_LCD0_VAL, &clk->src_lcd);
-
-	sdelay(0x10000);
-
-	writel(CLK_DIV_CPU0_VAL, &clk->div_cpu0);
-	writel(CLK_DIV_CPU1_VAL, &clk->div_cpu1);
-	writel(CLK_DIV_DMC0_VAL, &clk->div_dmc0);
-	writel(CLK_DIV_DMC1_VAL, &clk->div_dmc1);
-	writel(CLK_DIV_LEFTBUS_VAL, &clk->div_leftbus);
-	writel(CLK_DIV_RIGHTBUS_VAL, &clk->div_rightbus);
-	writel(CLK_DIV_TOP_VAL, &clk->div_top);
-	writel(CLK_DIV_FSYS1_VAL, &clk->div_fsys1);
-	writel(CLK_DIV_FSYS2_VAL, &clk->div_fsys2);
-	writel(CLK_DIV_FSYS3_VAL, &clk->div_fsys3);
-	writel(CLK_DIV_PERIL0_VAL, &clk->div_peril0);
-	writel(CLK_DIV_CAM_VAL, &clk->div_cam);
-	writel(CLK_DIV_MFC_VAL, &clk->div_mfc);
-	writel(CLK_DIV_G3D_VAL, &clk->div_g3d);
-	writel(CLK_DIV_LCD0_VAL, &clk->div_lcd);
-
-	/* Set PLL locktime */
-	writel(PLL_LOCKTIME, &clk->apll_lock);
-	writel(PLL_LOCKTIME, &clk->mpll_lock);
-	writel(PLL_LOCKTIME, &clk->epll_lock);
-	writel(PLL_LOCKTIME, &clk->vpll_lock);
-
-	writel(APLL_CON1_VAL, &clk->apll_con1);
-	writel(APLL_CON0_VAL, &clk->apll_con0);
-	writel(MPLL_CON1_VAL, &clk->mpll_con1);
-	writel(MPLL_CON0_VAL, &clk->mpll_con0);
-	writel(EPLL_CON1_VAL, &clk->epll_con1);
-	writel(EPLL_CON0_VAL, &clk->epll_con0);
-	writel(VPLL_CON1_VAL, &clk->vpll_con1);
-	writel(VPLL_CON0_VAL, &clk->vpll_con0);
-
-	sdelay(0x30000);
-#endif
 }

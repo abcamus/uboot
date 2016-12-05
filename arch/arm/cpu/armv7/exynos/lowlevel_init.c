@@ -171,6 +171,31 @@ static void secondary_cores_configure(void)
 extern void relocate_wait_code(void);
 #endif
 
+void test_uart()
+{
+	// set pinmux
+	unsigned int *addr = (unsigned int *)0x11400000;
+	writel(0x22222222, addr);
+
+	writel(0x222222, addr+0x20);
+
+	addr = (unsigned int *)0x13820000;
+#define ULCON_OFFSET		0x00
+#define UCON_OFFSET			0x04
+#define UFCON_OFFSET		0x08
+#define UBRDIV_OFFSET		0x28
+#define UDIVSLOT_OFFSET		0x2C
+#define UTXH_OFFSET			0x20
+	writel(0x111, addr+UFCON_OFFSET);
+	writel(0x3, addr+ULCON_OFFSET);
+	writel(0x3c5, addr+UCON_OFFSET);
+	writel(0x35, addr+UBRDIV_OFFSET);
+	writel(0x3, addr+UDIVSLOT_OFFSET);
+	writel(0x4f4f4f4f, addr+UTXH_OFFSET);
+	
+	return;
+}
+
 int do_lowlevel_init(void)
 {
 	uint32_t reset_status;
@@ -225,6 +250,7 @@ int do_lowlevel_init(void)
 		debug_uart_init();
 		printascii("UART OK.\n\r");
 #endif
+		test_uart();
 		mem_ctrl_init(actions & DO_MEM_RESET);
 		tzpc_init();
 	}
