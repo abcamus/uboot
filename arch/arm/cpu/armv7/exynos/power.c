@@ -173,6 +173,15 @@ void set_ps_hold_ctrl(void)
 {
 	if (cpu_is_exynos5())
 		exynos5_set_ps_hold_ctrl();
+	else if (cpu_is_exynos4()) {
+		struct exynos4x12_power *power = 
+			(struct exynos4x12_power *)samsung_get_base_power();
+		unsigned int value = readl(&power->ps_hold_control);
+		value |= 0x300;
+		writel(value, (unsigned int *)(&power->ps_hold_control));
+		writel(0, (unsigned int *)0x11000c08);
+		writel(0, &power->mask_wdt_reset_request);
+	}
 }
 
 

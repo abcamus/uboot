@@ -222,7 +222,9 @@ struct exynos4x12_power {
 	unsigned char	res4[0x1f4];				// 0x20c
 	unsigned int	swreset;					// 0x400
 	unsigned int	rst_stat;					// 0x404
-	unsigned char	res5[0x1f8];				// 0x408
+	unsigned int	auto_wdt_reset_disable;		// 0x408
+	unsigned int	mask_wdt_reset_request;		// 0x40c
+	unsigned char	res5[0x1f0];				// 0x410
 	unsigned int	wakeup_stat;				// 0x600
 	unsigned int	eint_wakeup_mask;			// 0x604
 	unsigned int	wakeup_mask;				// 0x608
@@ -240,8 +242,8 @@ struct exynos4x12_power {
 	unsigned int	body_bias_con2;				// 0x788
 	unsigned int	body_bias_con3;				// 0x78c
 	unsigned char	res8[0x70];					// 0x790
-	unsigned int	inform0;					// 0x800
-	unsigned int	inform1;
+	unsigned int	inform0;		// 0x800
+	unsigned int	inform1;		// 0x804
 	unsigned int	inform2;
 	unsigned int	inform3;
 	unsigned int	inform4;
