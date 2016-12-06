@@ -133,6 +133,8 @@
 #define DMC_RATIO(x)		(((x) & 0x7) << 12)
 #define DMCD_RATIO(x)		(((x) & 0x7) << 16)
 #define DMCP_RATIO(x)		(((x) & 0x7) << 20)
+#define COPY2_RATIO(x)		(((x) & 0x7) << 24)
+#define CORE_TIMERS_RATIO(x)	(((x) & 0x7) << 28)
 
 /* CLK_DIV_STAT_DMC0 */
 #define DIV_ACP(x)		((x) & 0x1)
@@ -505,20 +507,20 @@
 #define MPLL_CON1_VAL	((MPLL_AFC_ENB << 31) | (MPLL_AFC << 0))
 
 /* EPLL_CON0 */
-#define EPLL_MDIV		0x30
-#define EPLL_PDIV		0x3
-#define EPLL_SDIV		0x2
-#define EPLL_CON0_VAL		SET_PLL(EPLL_MDIV, EPLL_PDIV, EPLL_SDIV)
+#define EPLL_MDIV		0x40
+#define EPLL_PDIV		0x2
+#define EPLL_SDIV		0x3
+#define EPLL_CON0_VAL	SET_PLL(EPLL_MDIV, EPLL_PDIV, EPLL_SDIV)
 
 /* EPLL_CON1 */
 #define EPLL_K			0x0
 #define EPLL_CON1_VAL		(EPLL_K >> 0)
 
 /* VPLL_CON0 */
-#define VPLL_MDIV		0x35
-#define VPLL_PDIV		0x3
-#define VPLL_SDIV		0x2
-#define VPLL_CON0_VAL		SET_PLL(VPLL_MDIV, VPLL_PDIV, VPLL_SDIV)
+#define VPLL_MDIV		0x48
+#define VPLL_PDIV		0x2
+#define VPLL_SDIV		0x3
+#define VPLL_CON0_VAL	SET_PLL(VPLL_MDIV, VPLL_PDIV, VPLL_SDIV)
 
 /* VPLL_CON1 */
 #define VPLL_SSCG_EN		DISABLE
