@@ -80,9 +80,11 @@ void system_clock_init(void)
 	writel (CLK_DIV_LEFTBUS_VAL, &clk->div_leftbus);
 
 	writel (0x10, &clk->src_rightbus);
+	while (readl(&clk->mux_stat_rightbus) != 0x21)
+		continue;
 	writel (CLK_DIV_RIGHTBUS_VAL, &clk->div_rightbus);
 
-	// set lock time
+	// set PLL locktime
 #define APLL_LOCK_VAL	0x2F1
 #define MPLL_LOCK_VAL	0x2F1
 #define EPLL_LOCK_VAL	0x2321
@@ -93,11 +95,9 @@ void system_clock_init(void)
 	writel(VPLL_LOCK_VAL, &clk->vpll_lock);
 
 	// set div_cpu0
-	set = CORE_RATIO(0) | COREM0_RATIO(2) | COREM1_RATIO(5) |
-	      PERIPH_RATIO(3) | ATB_RATIO(4) | PCLK_DBG_RATIO(1) | APLL_RATIO(0) | CORE2_RATIO(0);
+	set = CORE_RATIO(0) | COREM0_RATIO(2) | COREM1_RATIO(5) | PERIPH_RATIO(3) | ATB_RATIO(4) | PCLK_DBG_RATIO(1) | APLL_RATIO(0) | CORE2_RATIO(0);
 	
-	clr = CORE_RATIO(7) | COREM0_RATIO(7) | COREM1_RATIO(7) |
-	      PERIPH_RATIO(7) | ATB_RATIO(7) | PCLK_DBG_RATIO(7) | APLL_RATIO(7) | CORE2_RATIO(7);
+	clr = CORE_RATIO(7) | COREM0_RATIO(7) | COREM1_RATIO(7) | PERIPH_RATIO(7) | ATB_RATIO(7) | PCLK_DBG_RATIO(7) | APLL_RATIO(7) | CORE2_RATIO(7);
 
 	clrsetbits_le32(&clk->div_cpu0, clr, set);
 
@@ -179,18 +179,12 @@ void system_clock_init(void)
 	while (readl(&clk->mux_stat_top1) != 0x01122110)
 		continue;
 
+	// TODO: C2C control
+	
 	/* CLK_SRC_PERIL0 */
 	clr = UART0_SEL(15) | UART1_SEL(15) | UART2_SEL(15) |
 	      UART3_SEL(15) | UART4_SEL(15);
 
-	/*
-	 * Set CLK_SRC_PERIL0 clocks src to MPLL
-	 * src values: 0(XXTI); 1(XusbXTI); 2(SCLK_HDMI24M); 3(SCLK_USBPHY0);
-	 *             5(SCLK_HDMIPHY); 6(SCLK_MPLL_USER_T); 7(SCLK_EPLL);
-	 *             8(SCLK_VPLL)
-	 *
-	 * Set all to SCLK_MPLL_USER_T
-	 */
 	set = UART0_SEL(6) | UART1_SEL(6) | UART2_SEL(6) | UART3_SEL(6) | UART4_SEL(6);
 
 	clrsetbits_le32(&clk->src_peril0, clr, set);
@@ -199,11 +193,6 @@ void system_clock_init(void)
 	clr = UART0_RATIO(15) | UART1_RATIO(15) | UART2_RATIO(15) |
 	      UART3_RATIO(15) | UART4_RATIO(15);
 
-	/*
-	 * For MOUTuart0-4: 800MHz
-	 *
-	 * SCLK_UARTx = MOUTuartX / (ratio + 1) = 100 (7)
-	*/
 	set = UART0_RATIO(7) | UART1_RATIO(7) | UART2_RATIO(7) |
 	      UART3_RATIO(7) | UART4_RATIO(7);
 
@@ -211,65 +200,6 @@ void system_clock_init(void)
 
 	while (readl(&clk->div_stat_peril0) & DIV_STAT_PERIL0_CHANGING)
 		continue;
-
-#if 0
-	/* CLK_DIV_FSYS1 */
-	clr = MMC0_RATIO(15) | MMC0_PRE_RATIO(255) | MMC1_RATIO(15) | MMC1_PRE_RATIO(255);
-
-	/*
-	 * For MOUTmmc0-3 = 800 MHz (MPLL)
-	 *
-	 * DOUTmmc1 = MOUTmmc1 / (ratio + 1) = 100 (7)
-	 * sclk_mmc1 = DOUTmmc1 / (ratio + 1) = 50 (1)
-	 * DOUTmmc0 = MOUTmmc0 / (ratio + 1) = 100 (7)
-	 * sclk_mmc0 = DOUTmmc0 / (ratio + 1) = 50 (1)
-	*/
-	set = MMC0_RATIO(7) | MMC0_PRE_RATIO(1) | MMC1_RATIO(7) |
-	      MMC1_PRE_RATIO(1);
-
-	clrsetbits_le32(&clk->div_fsys1, clr, set);
-
-	/* Wait for divider ready status */
-	while (readl(&clk->div_stat_fsys1) & DIV_STAT_FSYS1_CHANGING)
-		continue;
-
-	/* CLK_DIV_FSYS2 */
-	clr = MMC2_RATIO(15) | MMC2_PRE_RATIO(255) | MMC3_RATIO(15) | MMC3_PRE_RATIO(255);
-
-	/*
-	 * For MOUTmmc0-3 = 800 MHz (MPLL)
-	 *
-	 * DOUTmmc3 = MOUTmmc3 / (ratio + 1) = 100 (7)
-	 * sclk_mmc3 = DOUTmmc3 / (ratio + 1) = 50 (1)
-	 * DOUTmmc2 = MOUTmmc2 / (ratio + 1) = 100 (7)
-	 * sclk_mmc2 = DOUTmmc2 / (ratio + 1) = 50 (1)
-	*/
-	set = MMC2_RATIO(7) | MMC2_PRE_RATIO(1) | MMC3_RATIO(7) |
-	      MMC3_PRE_RATIO(1);
-
-	clrsetbits_le32(&clk->div_fsys2, clr, set);
-
-	/* Wait for divider ready status */
-	while (readl(&clk->div_stat_fsys2) & DIV_STAT_FSYS2_CHANGING)
-		continue;
-
-	/* CLK_DIV_FSYS3 */
-	clr = MMC4_RATIO(15) | MMC4_PRE_RATIO(255);
-
-	/*
-	 * For MOUTmmc4 = 800 MHz (MPLL)
-	 *
-	 * DOUTmmc4 = MOUTmmc4 / (ratio + 1) = 100 (7)
-	 * sclk_mmc4 = DOUTmmc4 / (ratio + 1) = 100 (0)
-	*/
-	set = MMC4_RATIO(7) | MMC4_PRE_RATIO(0);
-
-	clrsetbits_le32(&clk->div_fsys3, clr, set);
-
-	/* Wait for divider ready status */
-	while (readl(&clk->div_stat_fsys3) & DIV_STAT_FSYS3_CHANGING)
-		continue;
-#endif
 
 	led_on();
 
