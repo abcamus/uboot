@@ -73,17 +73,6 @@ void system_clock_init(void)
 	while (readl(&clk->mux_stat_top1) != 0x01111110)
 		continue;
 
-	writel (CLK_DIV_TOP_VAL, &clk->div_top);
-	writel (0x10, &clk->src_leftbus);
-	while (readl(&clk->mux_stat_leftbus) != 0x21)
-		continue;
-	writel (CLK_DIV_LEFTBUS_VAL, &clk->div_leftbus);
-
-	writel (0x10, &clk->src_rightbus);
-	while (readl(&clk->mux_stat_rightbus) != 0x21)
-		continue;
-	writel (CLK_DIV_RIGHTBUS_VAL, &clk->div_rightbus);
-
 	// set PLL locktime
 #define APLL_LOCK_VAL	0x2F1
 #define MPLL_LOCK_VAL	0x2F1
@@ -93,24 +82,6 @@ void system_clock_init(void)
 	writel(MPLL_LOCK_VAL, &clk->mpll_lock);
 	writel(EPLL_LOCK_VAL, &clk->epll_lock);
 	writel(VPLL_LOCK_VAL, &clk->vpll_lock);
-
-	// set div_cpu0
-	set = CORE_RATIO(0) | COREM0_RATIO(2) | COREM1_RATIO(5) | PERIPH_RATIO(3) | ATB_RATIO(4) | PCLK_DBG_RATIO(1) | APLL_RATIO(0) | CORE2_RATIO(0);
-	
-	clr = CORE_RATIO(7) | COREM0_RATIO(7) | COREM1_RATIO(7) | PERIPH_RATIO(7) | ATB_RATIO(7) | PCLK_DBG_RATIO(7) | APLL_RATIO(7) | CORE2_RATIO(7);
-
-	clrsetbits_le32(&clk->div_cpu0, clr, set);
-
-	/* Wait for divider ready status */
-	while (readl(&clk->div_stat_cpu0) & DIV_STAT_CPU0_CHANGING)
-		continue;
-	
-	// set div_cpu1
-	set = COPY_RATIO(4) | HPM_RATIO(0);
-	clr = COPY_RATIO(7) | HPM_RATIO(7);
-	clrsetbits_le32(&clk->div_cpu1, clr, set);
-	while (readl(&clk->div_stat_cpu1) & DIV_STAT_CPU1_CHANGING)
-		continue;
 
 	/* Set APLL to 1000MHz */
 	writel (0x00803800, &clk->apll_con1);
@@ -178,6 +149,37 @@ void system_clock_init(void)
 	writel (0x00011000, &clk->src_top1);
 	while (readl(&clk->mux_stat_top1) != 0x01122110)
 		continue;
+
+	writel (0x10, &clk->src_leftbus);
+	while (readl(&clk->mux_stat_leftbus) != 0x21)
+		continue;
+	writel (CLK_DIV_LEFTBUS_VAL, &clk->div_leftbus);
+
+	writel (0x10, &clk->src_rightbus);
+	while (readl(&clk->mux_stat_rightbus) != 0x21)
+		continue;
+
+	// set div_cpu0
+	set = CORE_RATIO(0) | COREM0_RATIO(2) | COREM1_RATIO(5) | PERIPH_RATIO(3) | ATB_RATIO(4) | PCLK_DBG_RATIO(1) | APLL_RATIO(0) | CORE2_RATIO(0);
+	
+	clr = CORE_RATIO(7) | COREM0_RATIO(7) | COREM1_RATIO(7) | PERIPH_RATIO(7) | ATB_RATIO(7) | PCLK_DBG_RATIO(7) | APLL_RATIO(7) | CORE2_RATIO(7);
+
+	clrsetbits_le32(&clk->div_cpu0, clr, set);
+
+	/* Wait for divider ready status */
+	while (readl(&clk->div_stat_cpu0) & DIV_STAT_CPU0_CHANGING)
+		continue;
+	
+	// set div_cpu1
+	set = COPY_RATIO(4) | HPM_RATIO(0);
+	clr = COPY_RATIO(7) | HPM_RATIO(7);
+	clrsetbits_le32(&clk->div_cpu1, clr, set);
+	while (readl(&clk->div_stat_cpu1) & DIV_STAT_CPU1_CHANGING)
+		continue;
+
+	writel (CLK_DIV_TOP_VAL, &clk->div_top);
+
+	writel (CLK_DIV_RIGHTBUS_VAL, &clk->div_rightbus);
 
 	// TODO: C2C control
 	
