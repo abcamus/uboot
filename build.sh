@@ -11,12 +11,8 @@ then
 	echo "!!!not found u-boot.bin"
 fi
 
-cat spl/u-boot-spl.bin pad00.bin > image.bin
-./mkbl2 image.bin bl2.bin 14336
-cp -rf bl2.bin $sec_path
-cp -rf u-boot.bin $sec_path
+#cat spl/u-boot-spl.bin pad00.bin > image.bin
+#./mkbl2 image.bin bl2.bin 14336
+#cp -rf bl2.bin $sec_path
 
-cd $sec_path
-
-cat E4412_N.bl1.SCP2G.bin bl2.bin all00_padding.bin u-boot.bin > image.bin
-mv image.bin $ROOT_DIR
+cat spl/landrover-spl.bin env.bin u-boot.bin > image.bin

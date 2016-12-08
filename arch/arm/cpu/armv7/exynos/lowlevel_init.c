@@ -34,11 +34,7 @@
 #include <asm/arch/system.h>
 #include <asm/armv7.h>
 #include "common_setup.h"
-#ifdef CONFIG_LANDROVER
 #include "landrover_setup.h"
-#else
-#include "exynos4_setup.h"
-#endif
 
 /* These are the things we can do during low-level init */
 enum {
@@ -176,8 +172,13 @@ void test_uart()
 	// set pinmux
 	unsigned int *addr = (unsigned int *)0x11400000;
 	writel(0x22222222, addr);
-
 	writel(0x222222, addr+0x20);
+
+	addr = (unsigned int *)0x1003c250;
+	writel(0x666666, addr);
+
+	addr = (unsigned int *)0x1003c550;
+	writel(0x777777, addr);
 
 	addr = (unsigned int *)0x13820000;
 #define ULCON_OFFSET		0x00

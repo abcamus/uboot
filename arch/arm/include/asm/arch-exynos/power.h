@@ -213,9 +213,13 @@ struct exynos4_power {
 struct exynos4x12_power {
 	unsigned int	om_stat;
 	unsigned char	res1[0xc];
-	unsigned int	rtc_clko_sel;				// 0x10
-	unsigned int	gnss_rtc_out_ctrl;			// 0x14
-	unsigned char	res2[0x1e8];				// 0x18
+	unsigned int	rtc_clko_sel;			// 0x10
+	unsigned int	gnss_rtc_out_ctrl;		// 0x14
+	unsigned int	lpi_denial_mask0;		// 0x18
+	unsigned int	lpi_denial_mask1;		// 0x1c
+	unsigned int	lpi_denial_mask2;		// 0x20
+	unsigned int	c2c_ctrl;		// 0x24
+	unsigned char	res2[0x1d8];				// 0x28
 	unsigned int	central_seq_config;			// 0x200
 	unsigned int	res3;
 	unsigned int	central_seq_option;			// 0x208
