@@ -32,10 +32,9 @@ enum index {
 
 /* IROM Function Pointers Table */
 u32 irom_ptr_table[] = {
-	[MMC_INDEX] = 0x02020030,	/* iROM Function Pointer-SDMMC boot */
-	[EMMC44_INDEX] = 0x02020044,	/* iROM Function Pointer-EMMC4.4 boot*/
-	[EMMC44_END_INDEX] = 0x02020048,/* iROM Function Pointer
-						-EMMC4.4 end boot operation */
+	[MMC_INDEX] = 0x00002488, //0x02020030,	/* iROM Function Pointer-SDMMC boot */
+	[EMMC44_INDEX] = 0x00007974, //0x02020044,	/* iROM Function Pointer-EMMC4.4 boot*/
+	[EMMC44_END_INDEX] = 0x000082c8, //0x02020048,/* iROM Function Pointer-EMMC4.4 end boot operation */
 	[SPI_INDEX] = 0x02020058,	/* iROM Function Pointer-SPI boot */
 	[USB_INDEX] = 0x02020070,	/* iROM Function Pointer-USB boot*/
 	};
