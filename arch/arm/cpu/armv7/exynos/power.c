@@ -181,9 +181,6 @@ void set_ps_hold_ctrl(void)
 		writel(value, &power->ps_hold_control);
 		writel(0, (unsigned int *)0x11000c08);
 		writel(0, &power->mask_wdt_reset_request);
-
-		if ((unsigned int)&power->mask_wdt_reset_request == 0x1002040c)
-			led_on();
 	}
 }
 

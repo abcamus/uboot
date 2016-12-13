@@ -32,9 +32,9 @@ enum index {
 
 /* IROM Function Pointers Table */
 u32 irom_ptr_table[] = {
-	[MMC_INDEX] = 0x00002488, //0x02020030,	/* iROM Function Pointer-SDMMC boot */
-	[EMMC44_INDEX] = 0x00007974, //0x02020044,	/* iROM Function Pointer-EMMC4.4 boot*/
-	[EMMC44_END_INDEX] = 0x000082c8, //0x02020048,/* iROM Function Pointer-EMMC4.4 end boot operation */
+	[MMC_INDEX] = 0x02020030,	/* iROM Function Pointer-SDMMC boot */
+	[EMMC44_INDEX] = 0x02020044,	/* iROM Function Pointer-EMMC4.4 boot*/
+	[EMMC44_END_INDEX] = 0x02020048,/* iROM Function Pointer-EMMC4.4 end boot operation */
 	[SPI_INDEX] = 0x02020058,	/* iROM Function Pointer-SPI boot */
 	[USB_INDEX] = 0x02020070,	/* iROM Function Pointer-USB boot*/
 	};
@@ -253,8 +253,22 @@ void copy_uboot_to_ram(void)
 		break;
 	}
 
-	if (copy_bl2)
+	unsigned int value = readl(0x1003c548);
+	value |= 0xf;
+	writel (value, 0x1003c548);
+
+	unsigned int index, base = 0x40000000;
+	for (index = 0; index<(1<<20); index++) {
+		writel (0x5a5a5a5a, base+index);
+		if (readl(base+index) != 0x5a5a5a5a)
+			printascii("dram read/write failed\n");
+	}
+	printascii("dram read/write passed\n");
+	
+	if (copy_bl2) {
 		copy_bl2(offset, size, CONFIG_SYS_TEXT_BASE);
+		printascii("starting u-boot\n");
+	}
 }
 
 void memzero(void *s, size_t n)
@@ -289,9 +303,10 @@ void board_init_f(unsigned long bootflag)
 
 	setup_global_data(&local_gd);
 
-	if (do_lowlevel_init())
+	if (do_lowlevel_init()) {
 		power_exit_wakeup();
-
+	}
+	
 	copy_uboot_to_ram();
 
 	/* Jump to U-Boot image */

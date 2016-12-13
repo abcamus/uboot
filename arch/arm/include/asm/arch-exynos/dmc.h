@@ -3,112 +3,112 @@
 
 #ifndef __ASSEMBLY__
 struct exynos4_dmc {
-	unsigned int concontrol;
-	unsigned int memcontrol;
-	unsigned int memconfig0;
-	unsigned int memconfig1;
-	unsigned int directcmd;
-	unsigned int prechconfig;
-	unsigned int phycontrol0;
-	unsigned int phycontrol1;
-	unsigned int phycontrol2;
-	unsigned int phycontrol3;
-	unsigned int pwrdnconfig;
-	unsigned char res1[0x4];
-	unsigned int timingref;
-	unsigned int timingrow;
-	unsigned int timingdata;
-	unsigned int timingpower;
-	unsigned int phystatus;
-	unsigned int phyzqcontrol;
-	unsigned int chip0status;
-	unsigned int chip1status;
-	unsigned int arefstatus;
-	unsigned int mrstatus;
-	unsigned int phytest0;
-	unsigned int phytest1;
-	unsigned int qoscontrol0;
-	unsigned int qosconfig0;
-	unsigned int qoscontrol1;
-	unsigned int qosconfig1;
-	unsigned int qoscontrol2;
-	unsigned int qosconfig2;
-	unsigned int qoscontrol3;
-	unsigned int qosconfig3;
-	unsigned int qoscontrol4;
-	unsigned int qosconfig4;
-	unsigned int qoscontrol5;
-	unsigned int qosconfig5;
-	unsigned int qoscontrol6;
-	unsigned int qosconfig6;
-	unsigned int qoscontrol7;
-	unsigned int qosconfig7;
-	unsigned int qoscontrol8;
-	unsigned int qosconfig8;
-	unsigned int qoscontrol9;
-	unsigned int qosconfig9;
-	unsigned int qoscontrol10;
-	unsigned int qosconfig10;
-	unsigned int qoscontrol11;
-	unsigned int qosconfig11;
-	unsigned int qoscontrol12;
-	unsigned int qosconfig12;
-	unsigned int qoscontrol13;
-	unsigned int qosconfig13;
-	unsigned int qoscontrol14;
-	unsigned int qosconfig14;
-	unsigned int qoscontrol15;
-	unsigned int qosconfig15;
-	unsigned int qostimeout0;
-	unsigned int qostimeout1;
-	unsigned char res2[0x8];
-	unsigned int ivcontrol;
-	unsigned char res3[0x8];
-	unsigned int perevconfig;
-	unsigned char res4[0xDF00];
-	unsigned int pmnc_ppc_a;
-	unsigned char res5[0xC];
-	unsigned int cntens_ppc_a;
-	unsigned char res6[0xC];
-	unsigned int cntenc_ppc_a;
-	unsigned char res7[0xC];
-	unsigned int intens_ppc_a;
-	unsigned char res8[0xC];
-	unsigned int intenc_ppc_a;
-	unsigned char res9[0xC];
-	unsigned int flag_ppc_a;
-	unsigned char res10[0xAC];
-	unsigned int ccnt_ppc_a;
-	unsigned char res11[0xC];
-	unsigned int pmcnt0_ppc_a;
-	unsigned char res12[0xC];
-	unsigned int pmcnt1_ppc_a;
-	unsigned char res13[0xC];
-	unsigned int pmcnt2_ppc_a;
-	unsigned char res14[0xC];
-	unsigned int pmcnt3_ppc_a;
-	unsigned char res15[0xEBC];
-	unsigned int pmnc_ppc_m;
-	unsigned char res16[0xC];
-	unsigned int cntens_ppc_m;
-	unsigned char res17[0xC];
-	unsigned int cntenc_ppc_m;
-	unsigned char res18[0xC];
-	unsigned int intens_ppc_m;
-	unsigned char res19[0xC];
-	unsigned int intenc_ppc_m;
-	unsigned char res20[0xC];
-	unsigned int flag_ppc_m;
-	unsigned char res21[0xAC];
-	unsigned int ccnt_ppc_m;
-	unsigned char res22[0xC];
-	unsigned int pmcnt0_ppc_m;
-	unsigned char res23[0xC];
-	unsigned int pmcnt1_ppc_m;
-	unsigned char res24[0xC];
-	unsigned int pmcnt2_ppc_m;
-	unsigned char res25[0xC];
-	unsigned int pmcnt3_ppc_m;
+	unsigned int concontrol;	// 0x0000
+	unsigned int memcontrol;	// 0x0004
+	unsigned int memconfig0;	// 0x0008
+	unsigned int memconfig1;	// 0x000c
+	unsigned int directcmd;		// 0x0010
+	unsigned int prechconfig;	// 0x0014
+	unsigned int phycontrol0;	// 0x0018
+	unsigned int phycontrol1;	// 0x001c
+	unsigned int phycontrol2;	// 0x0020
+	unsigned int phycontrol3;	// 0x0024
+	unsigned int pwrdnconfig;	// 0x0028
+	unsigned char res1[0x4];	// 0x002c
+	unsigned int timingref;		// 0x0030
+	unsigned int timingrow;		// 0x0034
+	unsigned int timingdata;	// 0x0038
+	unsigned int timingpower;	// 0x003c
+	unsigned int phystatus;		// 0x0040
+	unsigned int phyzqcontrol;	// 0x0044
+	unsigned int chip0status;	// 0x0048
+	unsigned int chip1status;	// 0x004c
+	unsigned int arefstatus;	// 0x0050
+	unsigned int mrstatus;		// 0x0054
+	unsigned int phytest0;		// 0x0058
+	unsigned int phytest1;		// 0x005c
+	unsigned int qoscontrol0;	// 0x0060
+	unsigned int qosconfig0;	// 0x0064
+	unsigned int qoscontrol1;	// 0x0068
+	unsigned int qosconfig1;	// 0x006c
+	unsigned int qoscontrol2;	// 0x0070
+	unsigned int qosconfig2;	// 0x0074
+	unsigned int qoscontrol3;	// 0x0078
+	unsigned int qosconfig3;	// 0x007c
+	unsigned int qoscontrol4;	// 0x0080
+	unsigned int qosconfig4;	// 0x0084
+	unsigned int qoscontrol5;	// 0x0088
+	unsigned int qosconfig5;	// 0x008c
+	unsigned int qoscontrol6;	// 0x0090
+	unsigned int qosconfig6;	// 0x0094
+	unsigned int qoscontrol7;	// 0x0098
+	unsigned int qosconfig7;	// 0x009c
+	unsigned int qoscontrol8;	// 0x00a0
+	unsigned int qosconfig8;	// 0x00a4
+	unsigned int qoscontrol9;	// 0x00a8
+	unsigned int qosconfig9;	// 0x00ac
+	unsigned int qoscontrol10;	// 0x00b0
+	unsigned int qosconfig10;	// 0x00b4
+	unsigned int qoscontrol11;	// 0x00b8
+	unsigned int qosconfig11;	// 0x00bc
+	unsigned int qoscontrol12;	// 0x00c0
+	unsigned int qosconfig12;	// 0x00c4
+	unsigned int qoscontrol13;	// 0x00c8
+	unsigned int qosconfig13;	// 0x00cc
+	unsigned int qoscontrol14;	// 0x00d0
+	unsigned int qosconfig14;	// 0x00d4
+	unsigned int qoscontrol15;	// 0x00d8
+	unsigned int qosconfig15;	// 0x00dc
+	unsigned int qostimeout0;	// 0x00e0
+	unsigned int qostimeout1;	// 0x00e4
+	unsigned char res2[0x8];	// 0x00e8
+	unsigned int ivcontrol;		// 0x00f0
+	unsigned char res3[0x8];	// 0x00f4
+	unsigned int perevconfig;	// 0x00fc
+	unsigned char res4[0xDF00];	// 0x0100
+	unsigned int pmnc_ppc_a;	// 0xe000
+	unsigned char res5[0xC];	// 0xe004
+	unsigned int cntens_ppc_a;	// 0xe010
+	unsigned char res6[0xC];	// 0xe014
+	unsigned int cntenc_ppc_a;	// 0xe020
+	unsigned char res7[0xC];	// 0xe024
+	unsigned int intens_ppc_a;	// 0xe030
+	unsigned char res8[0xC];	// 0xe034
+	unsigned int intenc_ppc_a;	// 0xe040
+	unsigned char res9[0xC];	// 0xe044
+	unsigned int flag_ppc_a;	// 0xe050
+	unsigned char res10[0xAC];	// 0xe054
+	unsigned int ccnt_ppc_a;	// 0xe100
+	unsigned char res11[0xC];	// 0xe104
+	unsigned int pmcnt0_ppc_a;	// 0xe110
+	unsigned char res12[0xC];	// 0xe114
+	unsigned int pmcnt1_ppc_a;	// 0xe120
+	unsigned char res13[0xC];	// 0xe124
+	unsigned int pmcnt2_ppc_a;	// 0xe130
+	unsigned char res14[0xC];	// 0xe134
+	unsigned int pmcnt3_ppc_a;	// 0xe140
+	unsigned char res15[0xEBC];	// 0xe144
+	unsigned int pmnc_ppc_m;	// 0xf000
+	unsigned char res16[0xC];	// 0xf004
+	unsigned int cntens_ppc_m;	// 0xf010
+	unsigned char res17[0xC];	// 0xf014
+	unsigned int cntenc_ppc_m;	// 0xf020
+	unsigned char res18[0xC];	// 0xf024
+	unsigned int intens_ppc_m;	// 0xf030
+	unsigned char res19[0xC];	// 0xf034
+	unsigned int intenc_ppc_m;	// 0xf040
+	unsigned char res20[0xC];	// 0xf044
+	unsigned int flag_ppc_m;	// 0xf050
+	unsigned char res21[0xAC];	// 0xf054
+	unsigned int ccnt_ppc_m;	// 0xf100
+	unsigned char res22[0xC];	// 0xf104
+	unsigned int pmcnt0_ppc_m;	// 0xf110
+	unsigned char res23[0xC];	// 0xf114
+	unsigned int pmcnt1_ppc_m;	// 0xf120
+	unsigned char res24[0xC];	// 0xf124
+	unsigned int pmcnt2_ppc_m;	// 0xf130
+	unsigned char res25[0xC];	// 0xf134
+	unsigned int pmcnt3_ppc_m;	// 0xf140
 };
 
 struct exynos5_dmc {

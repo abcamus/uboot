@@ -26,11 +26,7 @@
 #include <config.h>
 #include <asm/arch/dmc.h>
 #include "common_setup.h"
-#ifdef CONFIG_LANDROVER
 #include "landrover_setup.h"
-#else
-#include "exynos4_setup.h"
-#endif
 
 struct mem_timings mem = {
 	.direct_cmd_msr = {
@@ -81,6 +77,7 @@ static void dmc_config_mrs(struct exynos4_dmc *dmc, int chip)
 	}
 }
 
+#if 0
 static void dmc_init(struct exynos4_dmc *dmc)
 {
 	/*
@@ -168,50 +165,108 @@ static void dmc_init(struct exynos4_dmc *dmc)
 	/* turn on DREX0, DREX1 */
 	writel((mem.concontrol | AREF_EN), &dmc->concontrol);
 }
+#endif
+
+static void dmc_init(struct exynos4_dmc *dmc)
+{
+	writel (0, &dmc->phycontrol2);
+	writel (0, &dmc->phycontrol3);
+	writel (0xE3855503, &dmc->phyzqcontrol);
+	writel (0x71101008, &dmc->phycontrol0);
+	writel (0x7110100A, &dmc->phycontrol0);
+	writel (0x20000086, &dmc->phycontrol1);
+	writel (0x71101008, &dmc->phycontrol0);
+	writel (0x2000008E, &dmc->phycontrol1);
+	writel (0x20000086, &dmc->phycontrol1);
+	writel (0x2000008E, &dmc->phycontrol1);
+	writel (0x20000086, &dmc->phycontrol1);
+	writel (0x0FFF30CA, &dmc->concontrol);
+	writel (0x00302600, &dmc->memcontrol);
+	writel (0x40801333, &dmc->memconfig0);
+	
+	writel (0x80000000|0x7, &dmc->ivcontrol);
+	writel (0x64000000, &dmc->prechconfig);
+	writel (0x9C4000FF, &dmc->phycontrol0);
+	writel (0x000000BB, &dmc->timingref);
+	writel (0x7846654F, &dmc->timingrow);
+	writel (0x46400506, &dmc->timingdata);
+	writel (0x52000A3C, &dmc->timingpower);
+
+	sdelay (0x64);
+
+	writel (0x07000000, &dmc->directcmd);
+	sdelay (0x19000);
+
+	writel (0x00020000, &dmc->directcmd);
+	sdelay (0x2700);
+
+	writel (0x00030000, &dmc->directcmd);
+	sdelay (0x3f0);
+
+	writel (0x00010000, &dmc->directcmd);
+	writel (0x00000100, &dmc->directcmd);
+	sdelay(0x3f0);
+
+	writel (0x00000420, &dmc->directcmd);
+	sdelay(0x3f0);
+
+	writel (0x0A000000, &dmc->directcmd);
+	sdelay (0x3f0);
+}
+
+static void dmc_init1(struct exynos4_dmc *dmc)
+{
+	writel (0x7110100A, &dmc->phycontrol0);
+	writel (0x20000086, &dmc->phycontrol1);
+	writel (0x7110100B, &dmc->phycontrol0);
+
+	while (!readl(&dmc->phystatus) & (1<<2))
+		continue;
+
+	writel (0x2000008E, &dmc->phycontrol1);
+	writel (0x20000086, &dmc->phycontrol1);
+
+	while (!readl(&dmc->phystatus) & (1<<2))
+		continue;
+}
+
+static void dmc_init2(struct exynos4_dmc *dmc)
+{
+	unsigned int value;
+
+	value = readl (&dmc->concontrol);
+	value |= (1<<5);
+	writel (value, &dmc->concontrol);
+}
+
+static void dmc_init3(struct exynos4_dmc *dmc)
+{
+	unsigned int value;
+
+	value = readl (&dmc->memcontrol);
+	value |= (1<<4) | (1<<1) | (1<<0);
+	writel (value, &dmc->memcontrol);
+}
 
 void mem_ctrl_init(int reset)
 {
-	struct exynos4_dmc *dmc;
+	struct exynos4_dmc *dmc; 
 
-	/*
-	 * Async bridge configuration at CPU_core:
-	 * 1: half_sync
-	 * 0: full_sync
-	 */
-	writel(1, ASYNC_CONFIG);
-#ifdef CONFIG_ORIGEN
-	/* Interleave: 2Bit, Interleave_bit1: 0x15, Interleave_bit0: 0x7 */
-	writel(APB_SFR_INTERLEAVE_CONF_VAL, EXYNOS4_MIU_BASE +
-		APB_SFR_INTERLEAVE_CONF_OFFSET);
-	/* Update MIU Configuration */
-	writel(APB_SFR_ARBRITATION_CONF_VAL, EXYNOS4_MIU_BASE +
-		APB_SFR_ARBRITATION_CONF_OFFSET);
-#else
-	writel(APB_SFR_INTERLEAVE_CONF_VAL, EXYNOS4_MIU_BASE +
-		APB_SFR_INTERLEAVE_CONF_OFFSET);
-	writel(INTERLEAVE_ADDR_MAP_START_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_INTERLEAVE_ADDRMAP_START_OFFSET);
-	writel(INTERLEAVE_ADDR_MAP_END_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_INTERLEAVE_ADDRMAP_END_OFFSET);
-	writel(INTERLEAVE_ADDR_MAP_EN, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV_ADDRMAP_CONF_OFFSET);
-#ifdef CONFIG_MIU_LINEAR
-	writel(SLAVE0_SINGLE_ADDR_MAP_START_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV0_SINGLE_ADDRMAP_START_OFFSET);
-	writel(SLAVE0_SINGLE_ADDR_MAP_END_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV0_SINGLE_ADDRMAP_END_OFFSET);
-	writel(SLAVE1_SINGLE_ADDR_MAP_START_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV1_SINGLE_ADDRMAP_START_OFFSET);
-	writel(SLAVE1_SINGLE_ADDR_MAP_END_ADDR, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV1_SINGLE_ADDRMAP_END_OFFSET);
-	writel(APB_SFR_SLV_ADDR_MAP_CONF_VAL, EXYNOS4_MIU_BASE +
-		ABP_SFR_SLV_ADDRMAP_CONF_OFFSET);
-#endif
-#endif
 	/* DREX0 */
 	dmc = (struct exynos4_dmc *)samsung_get_base_dmc_ctrl();
+	if ((unsigned int)dmc != 0x10600000)
+		printascii("\ndmc base addr error\n");
+	else
+		printascii("\nGot the right DMC base address\n");
 	dmc_init(dmc);
-	dmc = (struct exynos4_dmc *)(samsung_get_base_dmc_ctrl()
-					+ DMC_OFFSET);
-	dmc_init(dmc);
+	dmc_init(dmc+DMC_OFFSET);
+	dmc = (struct exynos4_dmc *)samsung_get_base_dmc_ctrl();
+	dmc_init1(dmc);
+	dmc_init1(dmc+DMC_OFFSET);
+	dmc_init2(dmc);
+	dmc_init2(dmc+DMC_OFFSET);
+	dmc_init3(dmc);
+	dmc_init3(dmc+DMC_OFFSET);
+
+	printascii("dmc config finished\n\r");
 }

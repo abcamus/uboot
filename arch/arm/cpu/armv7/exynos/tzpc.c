@@ -17,6 +17,8 @@ void tzpc_init(void)
 	unsigned int addr, start = 0, end = 0;
 
 	start = samsung_get_base_tzpc();
+	if (start == 0x10110000)
+		printascii("start tzpc config\n");
 
 	if (cpu_is_exynos5())
 		end = start + ((EXYNOS5_NR_TZPC_BANKS - 1) * TZPC_BASE_OFFSET);

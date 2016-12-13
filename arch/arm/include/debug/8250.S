@@ -31,6 +31,7 @@
 #endif
 
 #define UART_SHIFT CONFIG_DEBUG_UART_8250_SHIFT
+#define UART_TX		0x8
 
 		.macro	senduart,rd,rx
 		store	\rd, [\rx, #UART_TX << UART_SHIFT]
@@ -45,6 +46,8 @@
 
 		.macro	waituart,rd,rx
 #ifdef CONFIG_DEBUG_UART_8250_FLOW_CONTROL
+#define UART_MSR		0x4
+#define UART_MSR_CTS	0x2
 1001:		load	\rd, [\rx, #UART_MSR << UART_SHIFT]
 		tst	\rd, #UART_MSR_CTS
 		beq	1001b

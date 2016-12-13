@@ -80,7 +80,7 @@ ENTRY(printascii)
 		b	2f
 1:		waituart r2, r3
 		senduart r1, r3
-		busyuart r2, r3
+		//busyuart r2, r3
 		teq	r1, #'\n'
 		moveq	r1, #'\r'
 		beq	1b

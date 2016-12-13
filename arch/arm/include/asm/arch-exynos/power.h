@@ -253,9 +253,9 @@ struct exynos4x12_power {
 	unsigned int	inform4;
 	unsigned int	inform5;
 	unsigned int	inform6;
-	unsigned int	inform7;					// 0x81c
-	unsigned char	res9[0x1e0];				// 0x820
-	unsigned int	pmu_debug;					// 0xa00
+	unsigned int	inform7;		// 0x81c
+	unsigned char	res9[0x1e0];	// 0x820
+	unsigned int	pmu_debug;		// 0xa00
 	unsigned char	res10[0x5fc];
 	unsigned int	arm_core0_sys_pwr_reg;		// 0x1000
 	unsigned char	res11[0xc];

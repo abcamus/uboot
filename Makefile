@@ -559,7 +559,7 @@ endif # $(dot-config)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os
 else
-KBUILD_CFLAGS	+= -O2
+KBUILD_CFLAGS	+= -O0
 endif
 
 ifdef BUILD_TAG
@@ -568,10 +568,10 @@ endif
 
 KBUILD_CFLAGS += $(call cc-option,-fno-stack-protector)
 
-KBUILD_CFLAGS	+= -g
+#KBUILD_CFLAGS	+= -g
 # $(KBUILD_AFLAGS) sets -g, which causes gcc to pass a suitable -g<format>
 # option to the assembler.
-KBUILD_AFLAGS	+= -g
+#KBUILD_AFLAGS	+= -g
 
 # Report stack usage if supported
 ifeq ($(shell $(CONFIG_SHELL) $(srctree)/scripts/gcc-stack-usage.sh $(CC)),y)
@@ -591,7 +591,7 @@ endif
 KBUILD_CFLAGS   += $(call cc-option,-Werror=date-time)
 
 ifneq ($(CONFIG_SYS_TEXT_BASE),)
-KBUILD_CPPFLAGS += -DCONFIG_SYS_TEXT_BASE=$(CONFIG_SYS_TEXT_BASE)
+#KBUILD_CPPFLAGS += -DCONFIG_SYS_TEXT_BASE=$(CONFIG_SYS_TEXT_BASE)
 endif
 
 export CONFIG_SYS_TEXT_BASE

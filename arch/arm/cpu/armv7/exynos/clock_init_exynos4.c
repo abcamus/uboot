@@ -30,11 +30,7 @@
 #include <asm/arch/clk.h>
 #include <asm/arch/clock.h>
 #include "common_setup.h"
-#ifdef CONFIG_LANDROVER
 #include "landrover_setup.h"
-#else
-#include "exynos4_setup.h"
-#endif
 
 /*
  * system_clock_init: Initialize core clock and bus clock.
@@ -46,15 +42,11 @@ void system_clock_init(void)
 	unsigned int *addr;
 	struct exynos4x12_clock *clk = (struct exynos4x12_clock *)samsung_get_base_clock();
 
-
-	/* reset MUXs */	
-
 	// src_cpu
 	writel(0, &clk->src_cpu);
 	while (readl(&clk->mux_stat_cpu) != 0x01110001)
 		continue;
 
-	// div_dmc0
 	set = ACP_RATIO(3) | ACP_PCLK_RATIO(1) | DPHY_RATIO(1)
 		| DMC_RATIO(1) | DMCD_RATIO(1) | DMCP_RATIO(1) 
 		| COPY2_RATIO(3) | CORE_TIMERS_RATIO(1);
@@ -65,17 +57,14 @@ void system_clock_init(void)
 
 	clrsetbits_le32(&clk->div_dmc0, clr, set);
 
-	// div_dmc1
 	clr = PWI_RATIO(0xf) | DVSEM_RATIO(0x7f) | DPM_RATIO(0x7f);
 	set = PWI_RATIO(1) | DVSEM_RATIO(1) | DPM_RATIO(1);
 	clrsetbits_le32(&clk->div_dmc1, clr, set);
 
-	// src_top0
 	writel(0, &clk->src_top0);
 	while (readl(&clk->mux_stat_top0) != 0x11111111)
 		continue;
 
-	// src_top1
 	writel(0, &clk->src_top1);
 	while (readl(&clk->mux_stat_top1) != 0x01111110)
 		continue;
@@ -93,17 +82,15 @@ void system_clock_init(void)
 
 	writel (CLK_DIV_RIGHTBUS_VAL, &clk->div_rightbus);
 	
-	// set PLL locktime
-#define APLL_LOCK_VAL	PLL_LOCKTIME		//0x2F1
-#define MPLL_LOCK_VAL	PLL_LOCKTIME		//0x2F1
-#define EPLL_LOCK_VAL	PLL_LOCKTIME		//0x2321
-#define VPLL_LOCK_VAL	PLL_LOCKTIME		//0x2321
+#define APLL_LOCK_VAL	0x2F1
+#define MPLL_LOCK_VAL	0x2F1
+#define EPLL_LOCK_VAL	0x2321
+#define VPLL_LOCK_VAL	0x2321
 	writel(APLL_LOCK_VAL, &clk->apll_lock);
 	writel(MPLL_LOCK_VAL, &clk->mpll_lock);
 	writel(EPLL_LOCK_VAL, &clk->epll_lock);
 	writel(VPLL_LOCK_VAL, &clk->vpll_lock);
 
-	// set div_cpu0
 	set = CORE_RATIO(0) | COREM0_RATIO(3) | COREM1_RATIO(7) | PERIPH_RATIO(3) | ATB_RATIO(4) | PCLK_DBG_RATIO(1) | APLL_RATIO(1) | CORE2_RATIO(0);
 	
 	clr = CORE_RATIO(7) | COREM0_RATIO(7) | COREM1_RATIO(7) | PERIPH_RATIO(7) | ATB_RATIO(7) | PCLK_DBG_RATIO(7) | APLL_RATIO(7) | CORE2_RATIO(7);
@@ -114,7 +101,6 @@ void system_clock_init(void)
 	while (readl(&clk->div_stat_cpu0) & DIV_STAT_CPU0_CHANGING)
 		continue;
 	
-	// set div_cpu1
 	set = COPY_RATIO(4) | HPM_RATIO(0);
 	clr = COPY_RATIO(7) | HPM_RATIO(7);
 	clrsetbits_le32(&clk->div_cpu1, clr, set);
@@ -193,7 +179,6 @@ void system_clock_init(void)
 
 	if (((value >> 8) & 0x3) != 2)
 		return;
-	led_on();
 
 	addr = (unsigned int *)(LANDROVER_POWER_BASE+C2C_CTRL_OFFSET);
 	value = readl(addr);

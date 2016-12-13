@@ -12,7 +12,9 @@ then
 fi
 
 cat spl/u-boot-spl.bin pad00.bin > image.bin
+
 ./mkbl2 image.bin bl2.bin 14336
+#./mkbl2 u-boot.bin bl2.bin 14336
 cp -rf bl2.bin $sec_path
 cp -rf u-boot.bin $sec_path
 cd $sec_path
