@@ -170,7 +170,7 @@ extern void relocate_wait_code(void);
 void test_uart()
 {
 	// set pinmux
-	unsigned int addr = (unsigned int *)0x11400000;
+	unsigned int *addr = (unsigned int *)0x11400000;
 	writel(0x22222222, addr);
 	writel(0x222222, addr+0x20);
 
@@ -202,8 +202,6 @@ int do_lowlevel_init(void)
 {
 	uint32_t reset_status;
 	int actions = 0;
-	uint32_t value, boot_sel;
-	uint32_t *addr;
 
 	arch_cpu_init();
 
@@ -230,34 +228,6 @@ int do_lowlevel_init(void)
 	/* Reconfigure secondary cores */
 	secondary_cores_configure();
 #endif
-
-#define BOOT_ONENAND	0x1
-#define BOOT_NAND		0x40000
-#define BOOT_MMCSD		0x3
-#define BOOT_NOR		0x4
-#define BOOT_SEC_DEV	0x5
-#define BOOT_EMMC43		0x6
-#define BOOT_EMMC441	0x7
-
-#define POWER_BASE			0x10020000
-#define INF_REG_BASE		0x10020800
-#define INF_REG3_OFFSET		0x0C
-
-	addr = (unsigned int *)POWER_BASE;
-	value = readl(addr);
-	value &= 0x3E;
-	if (value == 0xA)
-		boot_sel = BOOT_ONENAND;
-	else if (value == 0x4)
-		boot_sel = BOOT_MMCSD;
-	else if (value == 0x6)
-		boot_sel = BOOT_EMMC43;
-	else if (value == 0x28)
-		boot_sel = BOOT_EMMC441;
-	else
-		led_on();
-	addr = (unsigned int *)INF_REG_BASE;
-	writel (boot_sel, addr+INF_REG3_OFFSET);
 
 	reset_status = get_reset_status();
 
@@ -286,11 +256,8 @@ int do_lowlevel_init(void)
 #endif
 		test_uart();
 		mem_ctrl_init(actions & DO_MEM_RESET);
-		tzpc_init();
+		//tzpc_init();
 	}
-	writel (0x5a5a, 0x40000000);
-	if (readl(0x40000000) == 0x5a5a)
-		printascii("read/write OK\n");
 
 	printascii("lowlevel init finished\n");
 	return actions & DO_WAKEUP;

@@ -57,7 +57,7 @@ void system_clock_init(void)
 
 	clrsetbits_le32(&clk->div_dmc0, clr, set);
 
-	clr = PWI_RATIO(0xf) | DVSEM_RATIO(0x7f) | DPM_RATIO(0x7f);
+	clr = C2C_ACLK_RATIO(0x7) | PWI_RATIO(0xf) | DVSEM_RATIO(0x7f) | DPM_RATIO(0x7f);
 	set = PWI_RATIO(1) | DVSEM_RATIO(1) | DPM_RATIO(1);
 	clrsetbits_le32(&clk->div_dmc1, clr, set);
 
@@ -179,12 +179,47 @@ void system_clock_init(void)
 
 	if (((value >> 8) & 0x3) != 2)
 		return;
-
+	
 	addr = (unsigned int *)(LANDROVER_POWER_BASE+C2C_CTRL_OFFSET);
 	value = readl(addr);
 	if ((value & 0x1) != 0)
 		return;
 
+	addr = (unsigned int *)(APB_DMC_0_BASE+DMC_PHYCONTROL0);
+	writel (0x7F10100A, addr);
+
+	addr = (unsigned int *)(APB_DMC_0_BASE+DMC_PHYCONTROL1);
+	writel (0xE0000084, addr);
+
+	addr = (unsigned int *)(APB_DMC_0_BASE+DMC_PHYCONTROL0);
+	writel (0x7F10100B, addr);
+	while (!(readl(APB_DMC_0_BASE+DMC_PHYSTATUS) & (1<<2)))
+		continue;
+
+	addr = (unsigned int *)(APB_DMC_0_BASE+DMC_PHYCONTROL1);
+	writel (0x0000008C, addr);
+	writel (0x00000084, addr);
+	while (!(readl(APB_DMC_0_BASE+DMC_PHYSTATUS) & (1<<2)))
+		continue;
+	
+	addr = (unsigned int *)(APB_DMC_1_BASE+DMC_PHYCONTROL0);
+	writel (0x7F10100A, addr);
+
+	addr = (unsigned int *)(APB_DMC_1_BASE+DMC_PHYCONTROL1);
+	writel (0xE0000084, addr);
+
+	addr = (unsigned int *)(APB_DMC_1_BASE+DMC_PHYCONTROL0);
+	writel (0x7F10100B, addr);
+	while (!(readl(APB_DMC_1_BASE+DMC_PHYSTATUS) & (1<<2)))
+		continue;
+
+	addr = (unsigned int *)(APB_DMC_1_BASE+DMC_PHYCONTROL1);
+	writel (0x0000008C, addr);
+	writel (0x00000084, addr);
+	while (!(readl(APB_DMC_1_BASE+DMC_PHYSTATUS) & (1<<2)))
+		continue;
+
+	
 	addr = (unsigned int *)(APB_DMC_0_BASE+DMC_CONCONTROL);
 	writel (0x0FFF30FA, addr);
 

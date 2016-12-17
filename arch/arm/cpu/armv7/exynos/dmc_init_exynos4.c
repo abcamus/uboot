@@ -187,6 +187,8 @@ static void dmc_init(struct exynos4_dmc *dmc)
 	writel (0x80000000|0x7, &dmc->ivcontrol);
 	writel (0x64000000, &dmc->prechconfig);
 	writel (0x9C4000FF, &dmc->phycontrol0);
+
+	// timing config
 	writel (0x000000BB, &dmc->timingref);
 	writel (0x7846654F, &dmc->timingrow);
 	writel (0x46400506, &dmc->timingdata);
@@ -212,39 +214,29 @@ static void dmc_init(struct exynos4_dmc *dmc)
 
 	writel (0x0A000000, &dmc->directcmd);
 	sdelay (0x3f0);
-}
 
-static void dmc_init1(struct exynos4_dmc *dmc)
-{
 	writel (0x7110100A, &dmc->phycontrol0);
 	writel (0x20000086, &dmc->phycontrol1);
 	writel (0x7110100B, &dmc->phycontrol0);
 
-	while (!readl(&dmc->phystatus) & (1<<2))
+	while (!(readl(&dmc->phystatus) & (1<<2)))
 		continue;
 
+	printascii("dmc init1\n");
 	writel (0x2000008E, &dmc->phycontrol1);
 	writel (0x20000086, &dmc->phycontrol1);
 
-	while (!readl(&dmc->phystatus) & (1<<2))
+	while (!(readl(&dmc->phystatus) & (1<<2)))
 		continue;
-}
 
-static void dmc_init2(struct exynos4_dmc *dmc)
-{
 	unsigned int value;
 
 	value = readl (&dmc->concontrol);
 	value |= (1<<5);
 	writel (value, &dmc->concontrol);
-}
-
-static void dmc_init3(struct exynos4_dmc *dmc)
-{
-	unsigned int value;
 
 	value = readl (&dmc->memcontrol);
-	value |= (1<<4) | (1<<1) | (1<<0);
+	value |= ((1<<4) | (1<<1) | (1<<0));
 	writel (value, &dmc->memcontrol);
 }
 
@@ -259,14 +251,7 @@ void mem_ctrl_init(int reset)
 	else
 		printascii("\nGot the right DMC base address\n");
 	dmc_init(dmc);
-	dmc_init(dmc+DMC_OFFSET);
-	dmc = (struct exynos4_dmc *)samsung_get_base_dmc_ctrl();
-	dmc_init1(dmc);
-	dmc_init1(dmc+DMC_OFFSET);
-	dmc_init2(dmc);
-	dmc_init2(dmc+DMC_OFFSET);
-	dmc_init3(dmc);
-	dmc_init3(dmc+DMC_OFFSET);
 
-	printascii("dmc config finished\n\r");
+	dmc = (struct exynos4_dmc *)(0x10610000);
+	dmc_init(dmc);
 }

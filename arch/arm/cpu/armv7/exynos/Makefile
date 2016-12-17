@@ -12,7 +12,7 @@ obj-$(CONFIG_EXYNOS5420)	+= sec_boot.o
 ifdef CONFIG_SPL_BUILD
 obj-$(CONFIG_EXYNOS5)	+= clock_init_exynos5.o
 obj-$(CONFIG_EXYNOS5)	+= dmc_common.o dmc_init_ddr3.o
-ifneq (, $(filter y, $(CONFIG_EXYNOS4210) $(CONFIG_LANDROVER)))
+ifneq (, $(filter y, $(CONFIG_LANDROVER)))
 obj-y 	+= dmc_init_exynos4.o clock_init_exynos4.o
 obj-y	+= spl_boot.o
 obj-y	+= lowlevel_init.o

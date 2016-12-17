@@ -221,6 +221,7 @@ void copy_uboot_to_ram(void)
 		break;
 #endif
 	case BOOT_MODE_SD:
+		printascii("SDMMC boot\n");
 		offset = BL2_START_OFFSET;
 		size = BL2_SIZE_BLOC_COUNT;
 		copy_bl2 = get_irom_func(MMC_INDEX);
@@ -253,21 +254,8 @@ void copy_uboot_to_ram(void)
 		break;
 	}
 
-	unsigned int value = readl(0x1003c548);
-	value |= 0xf;
-	writel (value, 0x1003c548);
-
-	unsigned int index, base = 0x40000000;
-	for (index = 0; index<(1<<20); index++) {
-		writel (0x5a5a5a5a, base+index);
-		if (readl(base+index) != 0x5a5a5a5a)
-			printascii("dram read/write failed\n");
-	}
-	printascii("dram read/write passed\n");
-	
 	if (copy_bl2) {
 		copy_bl2(offset, size, CONFIG_SYS_TEXT_BASE);
-		printascii("starting u-boot\n");
 	}
 }
 
