@@ -73,16 +73,16 @@ config DM
 	default y
 
 config DM_SERIAL
-	default y
+	default n
 
 config DM_SPI
-	default y
+	default n
 
 config DM_SPI_FLASH
-	default y
+	default n
 
 config DM_GPIO
-	default y
+	default n
 
 source "board/samsung/smdkv310/Kconfig"
 source "board/samsung/trats/Kconfig"

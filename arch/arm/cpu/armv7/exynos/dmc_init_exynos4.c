@@ -246,10 +246,6 @@ void mem_ctrl_init(int reset)
 
 	/* DREX0 */
 	dmc = (struct exynos4_dmc *)samsung_get_base_dmc_ctrl();
-	if ((unsigned int)dmc != 0x10600000)
-		printascii("\ndmc base addr error\n");
-	else
-		printascii("\nGot the right DMC base address\n");
 	dmc_init(dmc);
 
 	dmc = (struct exynos4_dmc *)(0x10610000);

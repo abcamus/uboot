@@ -170,7 +170,7 @@ extern void relocate_wait_code(void);
 void test_uart()
 {
 	// set pinmux
-	unsigned int *addr = (unsigned int *)0x11400000;
+	unsigned int addr = 0x11400000;
 	writel(0x22222222, addr);
 	writel(0x222222, addr+0x20);
 
