@@ -802,8 +802,9 @@ static int initf_dm(void)
 	int ret;
 
 	ret = dm_init_and_scan(true);
-	if (ret)
+	if (ret) {
 		return ret;
+	}
 #endif
 
 	return 0;
@@ -1029,7 +1030,6 @@ __weak void board_init_f(ulong boot_flags)
 	zero_global_data();
 #endif
 
-	printascii("Uboot running.\n");
 	gd->flags = boot_flags;
 	gd->have_console = 0;
 

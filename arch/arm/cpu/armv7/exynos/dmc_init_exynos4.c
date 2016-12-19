@@ -222,7 +222,6 @@ static void dmc_init(struct exynos4_dmc *dmc)
 	while (!(readl(&dmc->phystatus) & (1<<2)))
 		continue;
 
-	printascii("dmc init1\n");
 	writel (0x2000008E, &dmc->phycontrol1);
 	writel (0x20000086, &dmc->phycontrol1);
 
