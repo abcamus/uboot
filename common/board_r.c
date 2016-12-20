@@ -59,6 +59,8 @@
 #include <asm/arch/mmu.h>
 #endif
 
+#define _DEBUG 1
+
 DECLARE_GLOBAL_DATA_PTR;
 
 ulong monitor_flash_len;

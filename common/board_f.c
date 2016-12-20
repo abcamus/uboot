@@ -57,6 +57,8 @@
 #include <dm/root.h>
 #include <linux/compiler.h>
 
+//#define _DEBUG	1
+
 /*
  * Pointer to initial global data area
  *

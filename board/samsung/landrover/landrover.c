@@ -13,12 +13,6 @@
 #include <asm/arch/pinmux.h>
 #include <usb.h>
 
-#define GPL2CON     (*(volatile unsigned long *) 0x11000100)
-#define GPL2DAT     (*(volatile unsigned long *) 0x11000104)
-
-#define GPK1CON 	(*(volatile unsigned long *) 0x11000060)
-#define GPK1DAT		(*(volatile unsigned long *) 0x11000064)
-
 void delay(int r0)
 {
     volatile int count = r0;
@@ -35,6 +29,13 @@ u32 get_board_rev(void)
 
 int exynos_init(void)
 {	
+#if 0
+#define GPL2CON     (*(volatile unsigned long *) 0x11000100)
+#define GPL2DAT     (*(volatile unsigned long *) 0x11000104)
+
+#define GPK1CON 	(*(volatile unsigned long *) 0x11000060)
+#define GPK1DAT		(*(volatile unsigned long *) 0x11000064)
+
 	GPL2CON = 0x00000001;
 	GPK1CON = 0x00000010;
 	
@@ -47,6 +48,7 @@ int exynos_init(void)
 		GPK1DAT = 0x2;
 		delay(0x80000);
 	}
+#endif
 	return 0;
 }
 
