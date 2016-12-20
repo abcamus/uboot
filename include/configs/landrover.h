@@ -33,6 +33,7 @@
 
 #define CONFIG_SYS_TEXT_BASE	0x43e00000
 
+#define MACH_TYPE_LANDROVER		2838
 #define CONFIG_MACH_TYPE		MACH_TYPE_LANDROVER
 
 /* select serial console configuration */
