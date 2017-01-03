@@ -12,7 +12,7 @@
 #include <malloc.h>
 #include <mmc.h>
 #include <sdhci.h>
-//#define _DEBUG	1
+#define _DEBUG	1
 
 void *aligned_buffer;
 
@@ -295,9 +295,10 @@ static int sdhci_set_clock(struct mmc *mmc, unsigned int clock)
 		}
 	}
 	div >>= 1;
+	debug("%s: dev index = %d, div = %d.\n", __func__, host->index, div);
 
 	if (host->set_clock)
-		host->set_clock(host->index, div);
+		//host->set_clock(host->index, div);
 
 	clk = (div & SDHCI_DIV_MASK) << SDHCI_DIVIDER_SHIFT;
 	clk |= ((div & SDHCI_DIV_HI_MASK) >> SDHCI_DIV_MASK_LEN)

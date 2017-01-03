@@ -1489,7 +1489,7 @@ static int mmc_startup(struct mmc *mmc)
 	}
 
 	debug("%s: set mmc clock = %d.\n", __func__, mmc->tran_speed);
-	//mmc_set_clock(mmc, mmc->tran_speed);
+	mmc_set_clock(mmc, mmc->tran_speed);
 
 	/* Fix the block length for DDR mode */
 	if (mmc->ddr_mode) {
