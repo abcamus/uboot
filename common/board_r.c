@@ -439,13 +439,15 @@ static int should_load_env(void)
 static int initr_env(void)
 {
 	/* initialize environment */
-	if (should_load_env())
+	if (should_load_env()) {
 		env_relocate();
+	}
 	else
 		set_default_env(NULL);
 
 	/* Initialize from environment */
 	load_addr = getenv_ulong("loadaddr", 16, load_addr);
+	debug("%s:%d  load_addr = 0x%lx.\n", __func__, __LINE__, load_addr);
 #if defined(CONFIG_SYS_EXTBDINFO)
 #if defined(CONFIG_405GP) || defined(CONFIG_405EP)
 #if defined(CONFIG_I2CFAST)

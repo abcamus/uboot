@@ -12,6 +12,7 @@
 #include <fdtdec.h>
 #include <menu.h>
 #include <post.h>
+#define _DEBUG	1
 
 DECLARE_GLOBAL_DATA_PTR;
 

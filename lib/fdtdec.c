@@ -401,6 +401,7 @@ int fdtdec_add_aliases_for_id(const void *blob, const char *name,
 		debug("%s: warning: maxcount exceeded with alias '%s'\n",
 		       __func__, name);
 
+	printf("found %d nodes with compatibility...\n", count);
 	/* Now find all the aliases */
 	for (offset = fdt_first_property_offset(blob, alias_node);
 			offset > 0;
@@ -442,6 +443,7 @@ int fdtdec_add_aliases_for_id(const void *blob, const char *name,
 			       compat_names[id]);
 			continue;
 		}
+		printf("found a alise node, put into list number: %d\n", number);
 
 		/*
 		 * Add this node to our list in the right place, and mark
@@ -461,9 +463,11 @@ int fdtdec_add_aliases_for_id(const void *blob, const char *name,
 				num_found = number + 1;
 		}
 		nodes[found] = 0;
-	}
+	} /* end of find all the aliases */
 
-	/* Add any nodes not mentioned by an alias */
+	/* Add any nodes not mentioned by an alias
+	 * put nodes[] into node_list[]
+	 */
 	for (i = j = 0; i < maxcount; i++) {
 		if (!node_list[i]) {
 			for (; j < maxcount; j++)

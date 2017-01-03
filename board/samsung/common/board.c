@@ -25,6 +25,7 @@
 #include <asm/arch/sromc.h>
 #include <lcd.h>
 #include <samsung/misc.h>
+//#define _DEBUG	1
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -280,6 +281,8 @@ int board_mmc_init(bd_t *bis)
 
 	if (get_boot_mode() == BOOT_MODE_SD) {
 		ret = init_mmc();
+		if (ret)
+			printf("init_mmc failed\n");
 		ret |= init_dwmmc();
 	} else {
 		ret = init_dwmmc();
@@ -289,6 +292,7 @@ int board_mmc_init(bd_t *bis)
 	if (ret)
 		debug("mmc init failed\n");
 
+	debug("mmc init successfully\n");
 	return ret;
 }
 #endif

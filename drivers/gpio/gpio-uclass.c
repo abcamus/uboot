@@ -11,6 +11,7 @@
 #include <malloc.h>
 #include <asm/gpio.h>
 #include <linux/ctype.h>
+#define _DEBUG	1
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -299,8 +300,10 @@ int dm_gpio_get_value(struct gpio_desc *desc)
 	int ret;
 
 	ret = check_reserved(desc, "get_value");
-	if (ret)
+	if (ret) {
+		debug("%s:%d check_reserved error.\n", __func__, __LINE__);
 		return ret;
+	}
 
 	value = gpio_get_ops(desc->dev)->get_value(desc->dev, desc->offset);
 

@@ -199,6 +199,7 @@ int env_import(const char *buf, int check)
 		memcpy(&crc, &ep->crc, sizeof(crc));
 
 		if (crc32(0, ep->data, ENV_SIZE) != crc) {
+			// TODO: env values stuck
 			set_default_env("!bad CRC");
 			return 0;
 		}
@@ -264,6 +265,7 @@ void env_relocate(void)
 		set_default_env("!bad CRC");
 #endif
 	} else {
+		// exynos4412 is here
 		env_relocate_spec();
 	}
 }

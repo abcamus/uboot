@@ -277,6 +277,7 @@ void env_relocate_spec(void)
 		ep = tmp_env2;
 
 	env_flags = ep->flags;
+	//TODO: env_import fails cuz crc check
 	env_import((char *)ep, 0);
 	ret = 0;
 

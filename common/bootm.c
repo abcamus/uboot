@@ -587,9 +587,11 @@ int do_bootm_states(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[],
 	if (states & BOOTM_STATE_START)
 		ret = bootm_start(cmdtp, flag, argc, argv);
 
+	printf("%s:%d  started.\n", __func__, __LINE__);
 	if (!ret && (states & BOOTM_STATE_FINDOS))
 		ret = bootm_find_os(cmdtp, flag, argc, argv);
 
+	printf("%s:%d  searching os[done].\n", __func__, __LINE__);
 	if (!ret && (states & BOOTM_STATE_FINDOTHER)) {
 		ret = bootm_find_other(cmdtp, flag, argc, argv);
 		argc = 0;	/* consume the args */

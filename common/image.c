@@ -56,6 +56,7 @@ static const image_header_t *image_get_ramdisk(ulong rd_addr, uint8_t arch,
 #endif /* !USE_HOSTCC*/
 
 #include <u-boot/crc.h>
+#define _DEBUG	1
 
 #ifndef CONFIG_SYS_BARGSIZE
 #define CONFIG_SYS_BARGSIZE 512

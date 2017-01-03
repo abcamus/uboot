@@ -783,8 +783,13 @@ static unsigned long exynos4x12_get_uart_clk(int dev_index)
 
 static unsigned long exynos4_get_mmc_clk(int dev_index)
 {
+#if 0
 	struct exynos4_clock *clk =
 		(struct exynos4_clock *)samsung_get_base_clock();
+#endif
+	struct exynos4x12_clock *clk =
+		(struct exynos4x12_clock *)samsung_get_base_clock();
+
 	unsigned long uclk, sclk;
 	unsigned int sel, ratio, pre_ratio;
 	int shift = 0;
@@ -833,8 +838,12 @@ static unsigned long exynos4_get_mmc_clk(int dev_index)
 /* exynos4: set the mmc clock */
 static void exynos4_set_mmc_clk(int dev_index, unsigned int div)
 {
+#if 0
 	struct exynos4_clock *clk =
 		(struct exynos4_clock *)samsung_get_base_clock();
+#endif
+	struct exynos4x12_clock *clk = 
+		(struct exynos4x12_clock *)samsung_get_base_clock();
 	unsigned int addr, clear_bit, set_bit;
 
 	/*

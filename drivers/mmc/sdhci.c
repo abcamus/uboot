@@ -12,6 +12,7 @@
 #include <malloc.h>
 #include <mmc.h>
 #include <sdhci.h>
+//#define _DEBUG	1
 
 void *aligned_buffer;
 

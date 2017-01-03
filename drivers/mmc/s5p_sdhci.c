@@ -15,6 +15,7 @@
 #include <asm/arch/clk.h>
 #include <errno.h>
 #include <asm/arch/pinmux.h>
+//#define _DEBUG	1
 
 static char *S5P_NAME = "SAMSUNG SDHCI";
 static void s5p_sdhci_set_control_reg(struct sdhci_host *host)
@@ -72,6 +73,7 @@ static int s5p_sdhci_core_init(struct sdhci_host *host)
 		SDHCI_QUIRK_WAIT_SEND_CMD | SDHCI_QUIRK_USE_WIDE8;
 	host->voltages = MMC_VDD_32_33 | MMC_VDD_33_34 | MMC_VDD_165_195;
 	host->version = sdhci_readw(host, SDHCI_HOST_VERSION);
+	debug("sdhci version = 0x%x.\n", host->version);
 
 	host->set_control_reg = &s5p_sdhci_set_control_reg;
 	host->set_clock = set_mmc_clk;
@@ -109,6 +111,7 @@ static int do_sdhci_init(struct sdhci_host *host)
 	dev_id = host->index + PERIPH_ID_SDMMC0;
 
 	if (dm_gpio_is_valid(&host->pwr_gpio)) {
+		debug("config sdmmc pwr_gpio.\n");
 		dm_gpio_set_value(&host->pwr_gpio, 1);
 		err = exynos_pinmux_config(dev_id, flag);
 		if (err) {
@@ -118,8 +121,11 @@ static int do_sdhci_init(struct sdhci_host *host)
 	}
 
 	if (dm_gpio_is_valid(&host->cd_gpio)) {
-		if (dm_gpio_get_value(&host->cd_gpio))
-			return -ENODEV;
+		debug("config sdmmc cd_gpio.\n");
+		if (dm_gpio_get_value(&host->cd_gpio)) {
+			debug("dm gpio get value error.\n");
+			//return -ENODEV;
+		}
 
 		err = exynos_pinmux_config(dev_id, flag);
 		if (err) {
@@ -138,10 +144,11 @@ static int sdhci_get_config(const void *blob, int node, struct sdhci_host *host)
 
 	/* Get device id */
 	dev_id = pinmux_decode_periph_id(blob, node);
-	if (dev_id < PERIPH_ID_SDMMC0 && dev_id > PERIPH_ID_SDMMC3) {
+	if (dev_id < PERIPH_ID_SDMMC0 || dev_id > PERIPH_ID_SDMMC3) {
 		debug("MMC: Can't get device id\n");
 		return -1;
 	}
+	debug("sdmmc dev_id = %d.\n", dev_id);
 	host->index = dev_id - PERIPH_ID_SDMMC0;
 
 	/* Get bus width */
@@ -150,6 +157,7 @@ static int sdhci_get_config(const void *blob, int node, struct sdhci_host *host)
 		debug("MMC: Can't get bus-width\n");
 		return -1;
 	}
+	debug("sdmmc bus_width = %d.\n", bus_width);
 	host->bus_width = bus_width;
 
 	/* Get the base address from the device node */
@@ -158,6 +166,7 @@ static int sdhci_get_config(const void *blob, int node, struct sdhci_host *host)
 		debug("MMC: Can't get base address\n");
 		return -1;
 	}
+	debug("MMC <%d>, base = 0x%x\n", dev_id, base);
 	host->ioaddr = (void *)base;
 
 	gpio_request_by_name_nodev(blob, node, "pwr-gpios", 0, &host->pwr_gpio,
@@ -181,6 +190,7 @@ static int process_nodes(const void *blob, int node_list[], int count)
 		if (node <= 0)
 			continue;
 
+		printf("probing host[%d].\n", i);
 		host = &sdhci_host[i];
 
 		if (sdhci_get_config(blob, node, host)) {
@@ -201,8 +211,7 @@ int exynos_mmc_init(const void *blob)
 			COMPAT_SAMSUNG_EXYNOS_MMC, node_list,
 			SDHCI_MAX_HOSTS);
 
-	process_nodes(blob, node_list, count);
-
-	return 1;
+	printf("sd mmc count = %d.\n", count);
+	return process_nodes(blob, node_list, count);
 }
 #endif
