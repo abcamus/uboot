@@ -28,6 +28,7 @@
 #include <command.h>
 #include <bootm.h>
 #include <image.h>
+#define _DEBUG 1
 
 #ifndef CONFIG_SYS_BOOTM_LEN
 /* use 8MByte as default max gunzip size */
@@ -587,16 +588,17 @@ int do_bootm_states(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[],
 	if (states & BOOTM_STATE_START)
 		ret = bootm_start(cmdtp, flag, argc, argv);
 
-	printf("%s:%d  started.\n", __func__, __LINE__);
+	debug("%s:%d  started.\n", __func__, __LINE__);
 	if (!ret && (states & BOOTM_STATE_FINDOS))
 		ret = bootm_find_os(cmdtp, flag, argc, argv);
 
-	printf("%s:%d  searching os[done].\n", __func__, __LINE__);
+	debug("%s:%d  searching os[done].\n", __func__, __LINE__);
 	if (!ret && (states & BOOTM_STATE_FINDOTHER)) {
 		ret = bootm_find_other(cmdtp, flag, argc, argv);
 		argc = 0;	/* consume the args */
 	}
 
+	debug("%s find other.\n", __func__);
 	/* Load the OS */
 	if (!ret && (states & BOOTM_STATE_LOADOS)) {
 		ulong load_end;
@@ -615,6 +617,7 @@ int do_bootm_states(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[],
 			fixup_silent_linux();
 #endif
 	}
+	debug("%s: load OS done.\n", __func__);
 
 	/* Relocate the ramdisk */
 #ifdef CONFIG_SYS_BOOT_RAMDISK_HIGH
@@ -636,7 +639,7 @@ int do_bootm_states(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[],
 					&images->ft_len);
 	}
 #endif
-
+	debug("%s: reserve fdt done.\n", __func__);
 	/* From now on, we need the OS boot function */
 	if (ret)
 		return ret;
@@ -679,6 +682,7 @@ int do_bootm_states(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[],
 		return ret;
 	}
 
+	debug("%s: run the OS.\n", __func__);
 	/* Now run the OS! We hope this doesn't return */
 	if (!ret && (states & BOOTM_STATE_OS_GO))
 		ret = boot_selected_os(argc, argv, BOOTM_STATE_OS_GO,

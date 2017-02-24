@@ -37,6 +37,7 @@
 #include <u-boot/sha1.h>
 #include <asm/errno.h>
 #include <asm/io.h>
+#define _DEBUG 1
 
 #ifdef CONFIG_CMD_BDI
 extern int do_bdinfo(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[]);
@@ -953,6 +954,7 @@ int boot_get_ramdisk(int argc, char * const argv[], bootm_headers_t *images,
 
 		/* copy from dataflash if needed */
 		rd_addr = genimg_get_image(rd_addr);
+		debug("rd_addr = 0x%x\n", rd_addr);
 
 		/*
 		 * Check if there is an initrd image at the
@@ -1010,7 +1012,7 @@ int boot_get_ramdisk(int argc, char * const argv[], bootm_headers_t *images,
 				rd_data = rd_len = rd_load = 0;
 				return 1;
 			}
-		}
+		} /* end of switch */
 	} else if (images->legacy_hdr_valid &&
 			image_check_type(&images->legacy_hdr_os_copy,
 						IH_TYPE_MULTI)) {

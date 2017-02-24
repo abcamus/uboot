@@ -14,7 +14,7 @@
 #include <cli.h>
 #include <linux/ctype.h>
 
-#define DEBUG_PARSER	0	/* set to 1 to debug */
+#define DEBUG_PARSER	1	/* set to 1 to debug */
 
 #define debug_parser(fmt, args...)		\
 	debug_cond(DEBUG_PARSER, fmt, ##args)

@@ -45,6 +45,13 @@ static int do_go(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	return rcode;
 }
 
+static int feel_lonely(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
+{
+    printf ("## I am lonely, and confused about the world!\n");
+
+    return 0;
+}
+
 /* -------------------------------------------------------------------- */
 
 U_BOOT_CMD(
@@ -55,6 +62,12 @@ U_BOOT_CMD(
 );
 
 #endif
+
+U_BOOT_CMD(
+           lonely, CONFIG_SYS_MAXARGS, 1, feel_lonely,
+           "I feel lonely",
+           ""
+);
 
 U_BOOT_CMD(
 	reset, 1, 0,	do_reset,

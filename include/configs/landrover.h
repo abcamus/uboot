@@ -11,8 +11,19 @@
 
 #include <configs/exynos4-common.h>
 
-#define CONFIG_SYS_PROMPT		"LANDROVER # "
+/*
+#define CONFIG_USE_IRQ
+ */
+#ifdef CONFIG_USE_IRQ
+#define CONFIG_STACKSIZE_IRQ		0x1000
+#define CONFIG_STACKSIZE_FIQ		0x1000
+#endif
+#define CONFIG_SYS_PROMPT		"landrover > "
+#define BOOT_MICROPY
 
+#ifdef BOOT_MICROPY
+#define CONFIG_SYS_THUMB_BUILD
+#endif
 
 /* High Level Configuration Options */
 #define CONFIG_EXYNOS4210		1	/* which is a EXYNOS4210 SoC */
@@ -33,7 +44,7 @@
 
 #define CONFIG_SYS_TEXT_BASE	0x43e00000
 
-#define MACH_TYPE_LANDROVER		2838
+#define MACH_TYPE_LANDROVER		0xffffffff
 #define CONFIG_MACH_TYPE		MACH_TYPE_LANDROVER
 
 /* select serial console configuration */
@@ -77,6 +88,7 @@
 	"mmcdev=0\0" \
 	"bootenv=uEnv.txt\0" \
 	"loadbootenv=load mmc ${mmcdev} ${loadaddr} ${bootenv}\0" \
+	"bootargs=console=ttySAC2,115200n8 earlyprintk\0" \
 	"importbootenv=echo Importing environment from mmc ...; " \
 		"env import -t $loadaddr $filesize\0" \
         "loadbootscript=load mmc ${mmcdev} ${loadaddr} boot.scr\0" \

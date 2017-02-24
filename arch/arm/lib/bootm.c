@@ -28,6 +28,7 @@
 #if defined(CONFIG_ARMV7_NONSEC) || defined(CONFIG_ARMV7_VIRT)
 #include <asm/armv7.h>
 #endif
+#define _DEBUG	1
 
 DECLARE_GLOBAL_DATA_PTR;
 
