@@ -83,7 +83,8 @@ clr_gd:
 	str	sp, [r9, #GD_MALLOC_BASE]
 #endif
 	/* mov r0, #0 not needed due to above code */
-	bl	board_init_f
+	bl led_on
+	bl board_init_f
 
 #if ! defined(CONFIG_SPL_BUILD)
 

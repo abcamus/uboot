@@ -66,7 +66,7 @@
 	};
 
 	dwmmc@12550000 {
-		samsung,bus-width = <8>;
+		samsung,bus-width = <4>;
 		samsung,timing = <2 1 0>;
 		samsung,removable = <0>;
 		fifoth_val = <0x203f0040>;

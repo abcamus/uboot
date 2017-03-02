@@ -232,5 +232,8 @@ void system_clock_init(void)
 	addr = (unsigned int *)(APB_DMC_1_BASE+DMC_MEMCONTROL);
 	writel (0x00202533, addr);
 
+	// eMMC clock configuration
+	set_mmc_clk(4, 0);
+
 	return;
 }

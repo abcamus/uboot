@@ -26,7 +26,10 @@ cd $sec_path
 echo "fusing image.bin......"
 
 #cat E4412_N.bl1.SCP2G.bin bl2.bin all00_padding.bin env.bin u-boot.bin > image.bin
-cat E4412_N.bl1.SCP2G.bin bl2.bin env.bin u-boot.bin > image.bin
+#cat E4412_N.bl1.SCP2G.bin bl2.bin env.bin u-boot.bin > image.bin
+################# for eMMC boot ####################
+cat E4412_N.bl1.SCP2G.bin bl2.bin u-boot.bin > image.bin
+####################################################
 mv image.bin $ROOT_DIR
 cd $ROOT_DIR
 

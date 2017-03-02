@@ -226,9 +226,11 @@ void copy_uboot_to_ram(void)
 		copy_bl2 = get_irom_func(MMC_INDEX);
 		break;
 #ifdef CONFIG_SUPPORT_EMMC_BOOT
-	case BOOT_MODE_EMMC:
-		/* Set the FSYS1 clock divisor value for EMMC boot */
-		emmc_boot_clk_div_set();
+	case BOOT_MODE_EMMC_SD:
+		/* Set the FSYS3 clock divisor value for EMMC boot */
+		//emmc_boot_clk_div_set();
+		set_mmc_clk(4, 0);
+		printascii("hello.\n");
 
 		copy_bl2_from_emmc = get_irom_func(EMMC44_INDEX);
 		end_bootop_from_emmc = get_irom_func(EMMC44_END_INDEX);
@@ -296,6 +298,7 @@ void board_init_f(unsigned long bootflag)
 	
 	copy_uboot_to_ram();
 
+	printascii("copy BL2 ends.\n");
 	/* Jump to U-Boot image */
 	uboot = (void *)CONFIG_SYS_TEXT_BASE;
 	(*uboot)();

@@ -35,6 +35,7 @@
 #define MEM_DLLl_ON
 
 led_on:
+	push {r0, r1}
 	ldr r0, =0x11000100
 	mov r1, #1
 	str r1, [r0]
@@ -46,7 +47,8 @@ led_on:
 	str r1, [r0]
 	ldr r0, =0x11000064
 	mov r0, #0
-	str r0, [r0]	
+	//str r0, [r0]	
+	pop {r0, r1}
 	bx lr
 
 reset:

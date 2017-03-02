@@ -95,6 +95,7 @@ static int exynos_dwmci_core_init(struct dwmci_host *host, int index)
 	sclk = get_mmc_clk(index);
 	div = DIV_ROUND_UP(sclk, freq);
 	/* set the clock divisor for mmc */
+	printf("emmc dev index = %d, sclk = %d, freq = %d, div = %d\n", index, sclk, freq, div);
 	set_mmc_clk(index, div);
 
 	host->name = "EXYNOS DWMMC";
@@ -258,6 +259,8 @@ static int exynos_dwmci_process_node(const void *blob,
 			return err;
 		}
 
+		printf("mmc4 clk source = 0x%x\n", readl(0x1003c240));
+		printf("mmc4 mask = 0x%x\n", readl(0x1003c340));
 		do_dwmci_init(host);
 	}
 	return 0;
@@ -275,6 +278,7 @@ int exynos_dwmmc_init(const void *blob)
 	count = fdtdec_find_aliases_for_id(blob, "mmc",
 				compat_id, node_list, DWMMC_MAX_CH_NUM);
 
+	printf("Found %d mmc nodes\n", count);
 	/* For DWMMC always set boot device as mmc 0 */
 	if (count >= 3 && get_boot_mode() == BOOT_MODE_SD) {
 		boot_dev_node = node_list[2];
