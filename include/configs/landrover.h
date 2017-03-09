@@ -11,6 +11,10 @@
 
 #include <configs/exynos4-common.h>
 
+#define CONFIG_SUPPORT_EMMC_BOOT
+#define CONFIG_EXYNOS_FB
+#define CONFIG_LCD
+
 /*
 #define CONFIG_USE_IRQ
  */
@@ -87,13 +91,15 @@
 	"console=ttySAC2,115200n8\0" \
 	"mmcdev=0\0" \
 	"bootenv=uEnv.txt\0" \
+	"dtb_addr=0x41000000\0" \
+	"dtb_name=exynos4412-landrover.dtb\0" \
 	"loadbootenv=load mmc ${mmcdev} ${loadaddr} ${bootenv}\0" \
 	"bootargs=console=ttySAC2,115200n8 earlyprintk\0" \
 	"importbootenv=echo Importing environment from mmc ...; " \
-		"env import -t $loadaddr $filesize\0" \
-        "loadbootscript=load mmc ${mmcdev} ${loadaddr} boot.scr\0" \
-        "bootscript=echo Running bootscript from mmc${mmcdev} ...; " \
-                "source ${loadaddr}\0"
+	"env import -t $loadaddr $filesize\0" \
+    "loadbootscript=load mmc ${mmcdev} ${loadaddr} boot.scr\0" \
+    "bootscript=echo Running bootscript from mmc${mmcdev} ...; " \
+    "source ${loadaddr}\0"
 #define CONFIG_BOOTCOMMAND \
 	"if mmc rescan; then " \
 		"echo SD/MMC found on device ${mmcdev};" \
@@ -109,7 +115,8 @@
 			"run bootscript; " \
 		"fi; " \
 	"fi;" \
-	"load mmc ${mmcdev} ${loadaddr} uImage; bootm ${loadaddr} "
+	"mmc read ${loadaddr} 0x1000 0x4000; mmc read ${dtb_addr} 0x800 0xa0; bootm ${loadaddr} - ${dtb_addr}" \
+	"load mmc ${mmcdev} ${loadaddr} uImage; load mmc ${mmcdev} ${dtb_addr} ${dtb_name}; bootm ${loadaddr} - ${dtb_addr}"
 
 #define CONFIG_IDENT_STRING		" for LANDROVER"
 
