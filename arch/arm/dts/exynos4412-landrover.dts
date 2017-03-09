@@ -29,6 +29,71 @@
 		mmc4 = "dwmmc@12550000";
 	};
 
+	fimd@11c00000 {
+		compatible = "samsung,exynos-fimd";
+		reg = <0x11c00000 0xa4>;
+
+		samsung,vl-freq = <60>;
+		samsung,vl-col = <720>;
+		samsung,vl-row = <1280>;
+		samsung,vl-width = <720>;
+		samsung,vl-height = <1280>;
+
+		samsung,vl-clkp = <0>;
+		samsung,vl-oep = <0>;
+		samsung,vl-hsp = <1>;
+		samsung,vl-vsp = <1>;
+		samsung,vl-dp = <1>;
+		samsung,vl-bpix = <4>;
+
+		samsung,vl-hspw = <5>;
+		samsung,vl-hbpd = <10>;
+		samsung,vl-hfpd = <10>;
+		samsung,vl-vspw = <2>;
+		samsung,vl-vbpd = <1>;
+		samsung,vl-vfpd = <13>;
+		samsung,vl-cmd-allow-len = <0xf>;
+
+		samsung,winid = <0>;
+		samsung,power-on-delay = <30>;
+		samsung,interface-mode = <1>;
+		samsung,mipi-enabled = <1>;
+		samsung,dp-enabled;
+		samsung,dual-lcd-enabled;
+
+		samsung,logo-on = <1>;
+		samsung,resolution = <0>;
+		samsung,rgb-mode = <0>;
+	};
+
+	mipidsi@11c80000 {
+		compatible = "samsung,exynos-mipi-dsi";
+		reg = <0x11c80000 0x5c>;
+
+		samsung,dsim-config-e-interface = <1>;
+		samsung,dsim-config-e-virtual-ch = <0>;
+		samsung,dsim-config-e-pixel-format = <7>;
+		samsung,dsim-config-e-burst-mode = <1>;
+		samsung,dsim-config-e-no-data-lane = <3>;
+		samsung,dsim-config-e-byte-clk = <0>;
+		samsung,dsim-config-hfp = <1>;
+
+		samsung,dsim-config-p = <3>;
+		samsung,dsim-config-m = <120>;
+		samsung,dsim-config-s = <1>;
+
+		samsung,dsim-config-pll-stable-time = <500>;
+		samsung,dsim-config-esc-clk = <20000000>;
+		samsung,dsim-config-stop-holding-cnt = <0x7ff>;
+		samsung,dsim-config-bta-timeout = <0xff>;
+		samsung,dsim-config-rx-timeout = <0xffff>;
+
+		samsung,dsim-device-id = <0xffffffff>;
+		samsung,dsim-device-bus-id = <0>;
+
+		samsung,dsim-device-reverse-panel = <1>;
+	};
+
 	i2c@13860000 {
 		samsung,i2c-sda-delay = <100>;
 		samsung,i2c-slave-addr = <0x10>;
