@@ -34,10 +34,10 @@
 		reg = <0x11c00000 0xa4>;
 
 		samsung,vl-freq = <60>;
-		samsung,vl-col = <720>;
-		samsung,vl-row = <1280>;
-		samsung,vl-width = <720>;
-		samsung,vl-height = <1280>;
+		samsung,vl-col = <800>;
+		samsung,vl-row = <480>;
+		samsung,vl-width = <800>;
+		samsung,vl-height = <480>;
 
 		samsung,vl-clkp = <0>;
 		samsung,vl-oep = <0>;
@@ -57,13 +57,15 @@
 		samsung,winid = <0>;
 		samsung,power-on-delay = <30>;
 		samsung,interface-mode = <1>;
-		samsung,mipi-enabled = <1>;
-		samsung,dp-enabled;
-		samsung,dual-lcd-enabled;
+		samsung,mipi-enabled = <0>;
+		//samsung,dp-enabled;
+		//samsung,dual-lcd-enabled;
 
-		samsung,logo-on = <1>;
+		samsung,logo-on = <0>;
 		samsung,resolution = <0>;
-		samsung,rgb-mode = <0>;
+		samsung,rgb-mode = <1>;
+		samsung,pwm-out-gpio  = <&gpd0 1 1>;
+		samsung,bl-en-gpio = <&gpd0 0 1>;
 	};
 
 	mipidsi@11c80000 {
