@@ -36,11 +36,13 @@ static void exynos4_set_system_display(void)
 	    (struct exynos4_sysreg *)samsung_get_base_sysreg();
 	unsigned int cfg = 0;
 
+	printf("exynos4 sysreg base = 0x%x.\n", (unsigned int *)sysreg);
 	/*
 	 * system register path set
 	 * 0: MIE/MDNIE
 	 * 1: FIMD Bypass
 	 */
+	printf("config system reg: 0x%p.\n", &sysreg->display_ctrl);
 	cfg = readl(&sysreg->display_ctrl);
 	cfg |= (1 << 1);
 	writel(cfg, &sysreg->display_ctrl);

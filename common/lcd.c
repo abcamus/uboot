@@ -8,6 +8,7 @@
  */
 
 /* #define DEBUG */
+#define DEBUG
 #include <config.h>
 #include <common.h>
 #include <command.h>
@@ -114,7 +115,13 @@ static void test_pattern(void)
 	ushort v_step = (v_max + N_BLK_VERT - 1) / N_BLK_VERT;
 	ushort h_step = (h_max + N_BLK_HOR  - 1) / N_BLK_HOR;
 	ushort v, h;
+#if (LCD_BPP == LCD_COLOR8)
 	uchar *pix = (uchar *)lcd_base;
+#elif (LCD_BPP == LCD_COLOR16)
+	ushort *pix = (ushort *)lcd_base;
+#else
+	uint *pix = (uint *)lcd_base;
+#endif
 
 	printf("[LCD] Test Pattern: %d x %d [%d x %d]\n",
 		h_max, v_max, h_step, v_step);
@@ -148,6 +155,7 @@ int drv_lcd_init(void)
 	int rc;
 
 	lcd_base = map_sysmem(gd->fb_base, 0);
+	printf("%s: lcd base = 0x%x.\n", __func__, lcd_base);
 
 	lcd_init(lcd_base);
 

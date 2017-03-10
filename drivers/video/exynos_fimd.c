@@ -6,6 +6,7 @@
  *
  * SPDX-License-Identifier:	GPL-2.0+
  */
+#define DEBUG
 
 #include <config.h>
 #include <common.h>
@@ -29,6 +30,18 @@ void exynos_fimd_lcd_init_mem(u_long screen_base, u_long fb_size,
 		u_long palette_size)
 {
 	lcd_base_addr = (unsigned long *)screen_base;
+	unsigned int index;
+	unsigned int value;
+	printf("init framebuffer at 0x%lx, fb_size = 0x%x.\n", lcd_base_addr, fb_size);
+	for (index = 0; index < fb_size; index+=4)
+	{
+		//*(lcd_base_addr+index) = 0x4;
+		writel(0xa0a0a0a0, lcd_base_addr+index);
+		value = readl(lcd_base_addr+index);
+		if (value != 0xa0a0a0a0)
+			printf("write error.\n");
+	}
+	printf("init framebuffer Done.....index = 0x%x.\n", index);
 }
 
 static void exynos_fimd_set_dualrgb(unsigned int enabled)
@@ -307,6 +320,8 @@ void exynos_fimd_lcd_init(vidinfo_t *vid)
 								node, "reg");
 	if (fimd_ctrl == NULL)
 		debug("Can't get the FIMD base address\n");
+	else
+		debug("fimd_ctrl base = 0x%x.\n", (unsigned int *)fimd_ctrl);
 
 	if (fdtdec_get_bool(gd->fdt_blob, node, "samsung,disable-sysmmu"))
 		exynos_fimd_disable_sysmmu();

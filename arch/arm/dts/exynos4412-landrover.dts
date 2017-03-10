@@ -34,21 +34,21 @@
 		reg = <0x11c00000 0xa4>;
 
 		samsung,vl-freq = <60>;
-		samsung,vl-col = <800>;
-		samsung,vl-row = <480>;
-		samsung,vl-width = <800>;
-		samsung,vl-height = <480>;
+		samsung,vl-col = <480>;
+		samsung,vl-row = <272>;
+		samsung,vl-width = <480>;
+		samsung,vl-height = <272>;
 
 		samsung,vl-clkp = <0>;
 		samsung,vl-oep = <0>;
 		samsung,vl-hsp = <1>;
-		samsung,vl-vsp = <1>;
+		samsung,vl-vsp = <0>;
 		samsung,vl-dp = <1>;
 		samsung,vl-bpix = <4>;
 
-		samsung,vl-hspw = <5>;
-		samsung,vl-hbpd = <10>;
-		samsung,vl-hfpd = <10>;
+		samsung,vl-hspw = <32>;
+		samsung,vl-hbpd = <80>;
+		samsung,vl-hfpd = <48>;
 		samsung,vl-vspw = <2>;
 		samsung,vl-vbpd = <1>;
 		samsung,vl-vfpd = <13>;
@@ -61,7 +61,7 @@
 		//samsung,dp-enabled;
 		//samsung,dual-lcd-enabled;
 
-		samsung,logo-on = <0>;
+		samsung,logo-on = <1>;
 		samsung,resolution = <0>;
 		samsung,rgb-mode = <1>;
 		samsung,pwm-out-gpio  = <&gpd0 1 1>;

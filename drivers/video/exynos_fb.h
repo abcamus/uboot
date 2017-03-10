@@ -12,6 +12,32 @@
 
 #include <asm/arch/fb.h>
 
+#define EXYNOS_GPIO_BASE	0x11400000
+#define GPD0CON		(EXYNOS_GPIO_BASE+0xA0)
+#define GPD0DAT		(GPD0CON+0x4)
+#define GPD0PUD		(GPD0CON+0x8)
+#define GPD0DRV		(GPD0CON+0xC)
+
+#define GPF0CON		(EXYNOS_GPIO_BASE+0x180)
+#define GPF0DRV		(GPF0CON+0xC)
+
+#define GPF1CON		(EXYNOS_GPIO_BASE+0x1A0)
+#define GPF1DRV		(GPF1CON+0xC)
+
+#define GPF2CON		(EXYNOS_GPIO_BASE+0x1C0)
+#define GPF2DRV		(GPF2CON+0xC)
+
+#define GPF3CON		(EXYNOS_GPIO_BASE+0x1E0)
+#define GPF3DRV		(GPF3CON+0xC)
+
+#define GPC0CON		(EXYNOS_GPIO_BASE+0x60)
+#define GPC0DAT		(GPC0CON+0x4)
+
+#define EXYNOS_GPIO_BASE_PART2	0x11000000
+#define GPL0CON		(EXYNOS_GPIO_BASE_PART2+0xC0)
+#define GPL0DAT		(GPL0CON+0x4)
+
+
 #define MAX_CLOCK	(86 * 1000000)
 
 enum exynos_cpu_auto_cmd_rate {

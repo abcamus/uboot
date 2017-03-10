@@ -921,8 +921,12 @@ static void exynos5420_set_mmc_clk(int dev_index, unsigned int div)
 /* get_lcd_clk: return lcd clock frequency */
 static unsigned long exynos4_get_lcd_clk(void)
 {
-	struct exynos4_clock *clk =
+	/*
+	 * struct exynos4_clock *clk =
 		(struct exynos4_clock *)samsung_get_base_clock();
+	 */
+	struct exynos4x12_clock *clk = 
+		(struct exynos4x12_clock *)samsung_get_base_clock();
 	unsigned long pclk, sclk;
 	unsigned int sel;
 	unsigned int ratio;
@@ -952,7 +956,7 @@ static unsigned long exynos4_get_lcd_clk(void)
 	 * CLK_DIV_LCD0
 	 * FIMD0_RATIO [3:0]
 	 */
-	ratio = readl(&clk->div_lcd0);
+	ratio = readl(&clk->div_lcd);
 	ratio = ratio & 0xf;
 
 	pclk = sclk / (ratio + 1);
@@ -1072,8 +1076,13 @@ static unsigned long exynos5800_get_lcd_clk(void)
 
 void exynos4_set_lcd_clk(void)
 {
-	struct exynos4_clock *clk =
+	/*
+	 * struct exynos4_clock *clk =
 	    (struct exynos4_clock *)samsung_get_base_clock();
+	 */
+	struct exynos4x12_clock *clk =
+	    (struct exynos4x12_clock *)samsung_get_base_clock();
+	printf("%s:%d.\n", __func__, __LINE__);
 
 	/*
 	 * CLK_GATE_BLOCK
@@ -1107,7 +1116,8 @@ void exynos4_set_lcd_clk(void)
 	 * CLK_PPMULCD0		[5]
 	 * Gating all clocks for FIMD0
 	 */
-	setbits_le32(&clk->gate_ip_lcd0, 1 << 0);
+	printf("gate_ip_lcd addr = 0x%p.\n", &clk->gate_ip_lcd);
+	setbits_le32(&clk->gate_ip_lcd, 1 << 0);
 
 	/*
 	 * CLK_DIV_LCD0
@@ -1119,7 +1129,7 @@ void exynos4_set_lcd_clk(void)
 	 * MIPI0_PRE_RATIO	[23:20]
 	 * set fimd ratio
 	 */
-	clrsetbits_le32(&clk->div_lcd0, 0xf, 0x1);
+	clrsetbits_le32(&clk->div_lcd, 0xf, 0x1);
 }
 
 void exynos5_set_lcd_clk(void)

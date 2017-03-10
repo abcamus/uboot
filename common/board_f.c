@@ -471,6 +471,7 @@ static int reserve_mmu(void)
 #ifdef CONFIG_LCD
 static int reserve_lcd(void)
 {
+	printf("%s:%d.\n", __func__, __LINE__);
 #ifdef CONFIG_FB_ADDR
 	gd->fb_base = CONFIG_FB_ADDR;
 #else
@@ -841,6 +842,7 @@ static init_fnc_t init_sequence_f[] = {
 #if defined(CONFIG_BOARD_EARLY_INIT_F)
 	board_early_init_f,
 #endif
+
 	/* TODO: can any of this go into arch_cpu_init()? */
 #if defined(CONFIG_PPC) && !defined(CONFIG_8xx_CPUCLK_DEFAULT)
 	get_clocks,		/* get CPU and bus clocks (etc.) */
@@ -851,6 +853,7 @@ static init_fnc_t init_sequence_f[] = {
 	/* TODO: can we rename this to timer_init()? */
 	init_timebase,
 #endif
+
 #if defined(CONFIG_ARM) || defined(CONFIG_MIPS) || defined(CONFIG_BLACKFIN)
 	timer_init,		/* initialize timer */
 #endif
@@ -1034,6 +1037,7 @@ __weak void board_init_f(ulong boot_flags)
 
 	gd->flags = boot_flags;
 	gd->have_console = 0;
+	printascii("board_init_f.\n");
 
 	if (initcall_run_list(init_sequence_f))
 		hang();

@@ -70,6 +70,38 @@ static void exynos_lcd_init(vidinfo_t *vid)
 
 __weak void exynos_cfg_lcd_gpio(void)
 {
+	/*
+	 * power,scl,sda
+	 */
+	unsigned int value = readl(GPD0CON);
+	writel(value|((3<<8)|(3<<12)), GPD0CON);
+	printf("GPD0CON value = 0x%x.\n", readl(GPD0CON));
+
+	/*
+	 * VGA EN
+	 */
+	writel(1<<8,GPC0CON);
+	writel(1<<2, GPC0DAT);
+
+	// BK_VDD_EN
+	writel(1<<16,GPL0CON);
+	writel(1<<4,GPL0DAT);
+
+	/*
+	 * lcd sync
+	 */
+	writel(0x22222222, GPF0CON);
+	writel(0xffff, GPF0DRV);
+
+	/*
+	 * lcd vd
+	 */
+	writel(0x22222222, GPF1CON);
+	writel(0xffff, GPF1DRV);
+	writel(0x22222222, GPF2CON);
+	writel(0xffff, GPF2DRV);
+	writel(0x2222, GPF3CON);
+	writel(0xff, GPF3DRV);
 }
 
 __weak void exynos_backlight_on(unsigned int onoff)
@@ -82,6 +114,8 @@ __weak void exynos_reset_lcd(void)
 
 __weak void exynos_lcd_power_on(void)
 {
+	unsigned int value = readl(GPD0CON);
+	writel(value|(2<<4), GPD0CON);
 }
 
 __weak void exynos_cfg_ldo(void)
@@ -133,14 +167,18 @@ static void lcd_panel_on(vidinfo_t *vid)
 		debug("FIMD: Can't get device node for FIMD\n");
 		return;
 	}
-	gpio_request_by_name_nodev(gd->fdt_blob, node, "samsung,pwm-out-gpio",
+	/*
+	 * gpio_request_by_name_nodev(gd->fdt_blob, node, "samsung,pwm-out-gpio",
 				   0, &pwm_out_gpio,
 				   GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE);
 
 	gpio_request_by_name_nodev(gd->fdt_blob, node, "samsung,bl-en-gpio", 0,
 				   &bl_en_gpio,
 				   GPIOD_IS_OUT | GPIOD_IS_OUT_ACTIVE);
+	 */
 
+
+	
 #endif
 	exynos_cfg_ldo();
 

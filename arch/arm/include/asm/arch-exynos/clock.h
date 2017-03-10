@@ -289,7 +289,7 @@ struct exynos4x12_clock {
 	unsigned int	src_mfc;	// 0xc228
 	unsigned int	src_g3d;	// 0xc22c
 	unsigned char	res21[0x4];
-	unsigned int	src_lcd;	// 0xc234
+	unsigned int	src_lcd0;	// 0xc234
 	unsigned int	src_isp;	// 0xc238
 	unsigned int	src_maudio;
 	unsigned int	src_fsys;	// 0xc240

@@ -143,7 +143,8 @@ int board_early_init_f(void)
 #endif
 	err = board_uart_init();
 	if (err) {
-		debug("UART init failed\n");
+		printascii("error while init uart.\n");
+		//debug("UART init failed\n");
 		return err;
 	}
 
