@@ -12,8 +12,15 @@
 #include <configs/exynos4-common.h>
 
 #define CONFIG_SUPPORT_EMMC_BOOT
+/*
+ * #define CONFIG_EXYNOS_FB
+#define CONFIG_LCD
+ */
 #define CONFIG_EXYNOS_FB
 #define CONFIG_LCD
+#define CONFIG_FB_ADDR	0x40000000
+#define LCD_TEST_PATTERN
+#define LCD_BPP		LCD_COLOR16
 
 /*
 #define CONFIG_USE_IRQ
